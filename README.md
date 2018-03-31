@@ -11,3 +11,5 @@ set DEBUG=2018_hr:* & npm start
 npm start
 
 sdfdf
+
+linh pull + push
