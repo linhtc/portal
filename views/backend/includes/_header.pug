@@ -1,0 +1,42 @@
+header.mdc-toolbar.mdc-theme--text-primary-on-primary-light.mdc-theme--primary-light-bg.mdc-toolbar--portal-no-shrink.portal-toolbar
+	.mdc-toolbar__row
+		section.mdc-toolbar__section.mdc-toolbar__section--align-start
+			a#portal-top-toolbar-burger-icon.portal-burger-menu-icon--classic.material-icons.mdc-toolbar__menu-icon(href='#') menu
+			span.mdc-toolbar__title Portal
+		section.mdc-toolbar__section.mdc-toolbar__section--align-end
+			#portal-layout-menu-button.material-icons.mdc-toolbar__icon.mdc-menu-anchor(aria-label='Notifications')
+				| apps
+				#portal-layout-menu.mdc-menu(tabindex='-1')
+					.mdc-menu__items.mdc-list(role='menu', aria-hidden='true')
+						a.mdc-list-item(href='/html/toolbar', role='menuitem', tabindex='0') Toolbar
+						a.mdc-list-item(href='/html/compact', role='menuitem', tabindex='0') Compact
+						a.mdc-list-item(href='/html/boxed', role='menuitem', tabindex='0') Boxed
+						a.mdc-list-item(href='/html/tabbed', role='menuitem', tabindex='0') Tabbed
+						a.mdc-list-item(href='/html/funky', role='menuitem', tabindex='0') Funky
+			#portal-theme-menu-button.material-icons.mdc-toolbar__icon.mdc-menu-anchor(aria-label='Change Colors')
+				| invert_colors
+				#portal-theme-menu.mdc-menu(tabindex='-1')
+					ul.mdc-menu__items.mdc-list(role='menu', aria-hidden='true')
+						li#classic-light_blue-pink.mdc-list-item(role='menuitem', tabindex='0')
+							| Classic - Light Blue / Pink
+						li#classic-green-deep_orange.mdc-list-item(role='menuitem', tabindex='0')
+							| Classic - Green / Deep Orange
+						li#classic-indigo-orange.mdc-list-item(role='menuitem', tabindex='0')
+							| Classic - Indigo / Orange
+						li#dark-light_blue-pink.mdc-list-item(role='menuitem', tabindex='0')
+							| Dark - Light Blue / Pink
+						li#dark-green-deep_orange.mdc-list-item(role='menuitem', tabindex='0')
+							| Dark - Green / Deep Orange
+						li#dark-indigo-orange.mdc-list-item(role='menuitem', tabindex='0')
+							| Dark - Indigo / Orange
+						li#night-light_blue-pink.mdc-list-item(role='menuitem', tabindex='0')
+							| Night - Light Blue / Pink
+						li#night-green-deep_orange.mdc-list-item(role='menuitem', tabindex='0')
+							| Night - Green / Deep Orange
+						li#night-indigo-orange.mdc-list-item(role='menuitem', tabindex='0')
+							| Night - Indigo / Orange
+			#rtl-switch.mdc-toolbar__icon.toggle.material-icons(role='button', aria-label='Text Direction', aria-pressed='false', tabindex='0', data-toggle-on='{"content": "format_textdirection_l_to_r", "label": "Left to Right"}', data-toggle-off='{"content": "format_textdirection_r_to_l", "label": "Right to Left"}')
+				| format_textdirection_l_to_r
+			#portal-top-toolbar-notification-icon.mdc-toolbar__icon.portal-toolbar__notification-icon(aria-label='Notifications')
+				span.material-icons notifications
+				span.portal-badge.portal-badge--secondary.portal-toolbar__badge 3

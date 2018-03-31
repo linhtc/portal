@@ -1,0 +1,343 @@
+extends layouts/_layout.pug
+
+block variables
+    - var activePage = 'dashboard'
+    - var activeGroup = 'none'
+
+block content
+    .portal-main__content.mdc-theme--background.mdc-theme--text-primary-on-background
+        .mdc-layout-grid
+            .mdc-layout-grid__inner
+                .portal-widget.mdc-layout-grid__cell--span-8-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Portal Analytics
+                    .mdc-card.mdc-card--portal-fullheight.mdc-card--portal-space-between.portal-widget__card
+                        nav#portal-stats-chart-nav.mdc-tab-bar.mdc-tab-bar--portal-border-bottom.mdc-tab-bar--portal-display-block
+                            a.mdc-tab.mdc-tab--portal-link.mdc-tab--active
+                                .mdc-tab__portal-stat-tab
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption Users
+                                    span.mdc-typography--title 2.9K
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption.mdc-tab__portal-stat-caption--trend-up
+                                        i.material-icons.mdc-tab__portal-stat-icon trending_up
+                                        |  23%
+                            a.mdc-tab.mdc-tab--portal-link
+                                .mdc-tab__portal-stat-tab
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption Revenue
+                                    span.mdc-typography--title $2906
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption.mdc-tab__portal-stat-caption--trend-down
+                                        i.material-icons.mdc-tab__portal-stat-icon trending_down
+                                        |  -56%
+                            a.mdc-tab.mdc-tab--portal-link
+                                .mdc-tab__portal-stat-tab
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption Conversion Rate
+                                    span.mdc-typography--title 0.24%
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption.mdc-tab__portal-stat-caption--trend-up
+                                        i.material-icons.mdc-tab__portal-stat-icon trending_up
+                                        |  29%
+                            a.mdc-tab.mdc-tab--portal-link
+                                .mdc-tab__portal-stat-tab
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption Sessions
+                                    span.mdc-typography--title 5.2K
+                                    span.mdc-typography--caption.mdc-tab__portal-stat-caption.mdc-tab__portal-stat-caption--trend-down
+                                        i.material-icons.mdc-tab__portal-stat-icon trending_up
+                                        |  79%
+                            span.mdc-tab-bar__indicator
+                        .portal-tab-panel.portal-tab-panel--active.portal-analytics-panel(role='tabpanel')
+                            canvas#analyticsChart
+                .portal-widget.portal-widget-primary.mdc-layout-grid__cell--span-4-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Active User
+                    .mdc-card.portal-widget__card.mdc-card--portal-fullheight.mdc-card--portal-space-between
+                        section.portal-widget__card-content
+                            p.mdc-typography--body2 Active users right now
+                            p.mdc-typography--display3.mdc-card__portal-counter 59
+                            p.mdc-typography--caption Page views per minute
+                            .mdc-card__portal-divider
+                        canvas#usersChart(style='max-height: 200px;')
+            .mdc-layout-grid__inner
+                .portal-widget.mdc-layout-grid__cell--span-4-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Sessions By Device
+                    .mdc-card.portal-widget__card.mdc-card--portal-fullheight.mdc-card--portal-space-between
+                        .portal-tab-sessions-chart
+                            canvas#sessionsChart
+                        .mdc-card__portal-divider
+                        section.portal-sessions-flex.portal-widget__card-content.portal-widget__card-icons-dots
+                            .portal-text-align-center.portal-sessions-flex__item
+                                .portal-widget__card-icons-dots__icon
+                                    i.fa.fa-laptop
+                                    span
+                                .mdc-typography--caption Desktop
+                                .mdc-typography--display1.portal-font-weight-light 25
+                            .portal-text-align-center.portal-sessions-flex__item
+                                .portal-widget__card-icons-dots__icon
+                                    i.fa.fa-tablet
+                                    span
+                                .mdc-typography--caption Tablet
+                                .mdc-typography--display1.portal-font-weight-light 5
+                            .portal-text-align-center.portal-sessions-flex__item
+                                .portal-widget__card-icons-dots__icon
+                                    i.fa.fa-mobile
+                                    span
+                                .mdc-typography--caption Mobile
+                                .mdc-typography--display1.portal-font-weight-light 11
+                .portal-widget.mdc-layout-grid__cell--span-8-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Client Acquisition
+                    .mdc-card.portal-widget__card.mdc-card--portal-fullheight.mdc-card--portal-space-between
+                        nav#portal-table-nav.mdc-tab-bar.mdc-tab-bar--portal-border-bottom.mdc-tab-bar--portal-display-block
+                            a.mdc-tab.mdc-tab--portal-link.mdc-tab--active
+                                | Brand Paid Search
+                            a.mdc-tab.mdc-tab--portal-link
+                                | Generic Search
+                            span.mdc-tab-bar__indicator
+                        #clients-table-tabs.portal-clients-table
+                            table.mdl-data-table.portal-table-tab-panel.portal-table-tab-panel--active
+                                thead
+                                    tr
+                                        th.mdl-data-table__cell--non-numeric Page
+                                        th Page Views
+                                        th Duration
+                                        th Conversion Rate
+                                tbody
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/1
+                                        td 11
+                                        td 00:00:53
+                                        td 25%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/2
+                                        td 13
+                                        td 00:01:05
+                                        td 32%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/3
+                                        td 135
+                                        td 00:01:17
+                                        td 21%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/4
+                                        td 153
+                                        td 00:01:11
+                                        td 25%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/5
+                                        td 54
+                                        td 00:02:03
+                                        td 20%
+                                    tr.portal-table-footer
+                                        td
+                                        td
+                                            | Items per page: 5
+                                        td
+                                            | 1 - 5 of 15
+                                        td
+                                            a.material-icons.portal-table-footer--icon-left(href='#')
+                                                | chevron_left
+                                            a.material-icons.portal-table-footer--icon-right(href='#')
+                                                | chevron_right
+                            table.mdl-data-table.portal-table-tab-panel
+                                thead
+                                    tr
+                                        th.mdl-data-table__cell--non-numeric Page
+                                        th Page Views
+                                        th Duration
+                                        th Conversion Rate
+                                tbody
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/1
+                                        td 198
+                                        td 00:03:53
+                                        td 15%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/2
+                                        td 472
+                                        td 00:02:45
+                                        td 82%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/3
+                                        td 12
+                                        td 00:01:07
+                                        td 66%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/4
+                                        td 11
+                                        td 00:05:31
+                                        td 33%
+                                    tr
+                                        td.mdl-data-table__cell--non-numeric /products/5
+                                        td 487
+                                        td 00:02:53
+                                        td 26%
+                                    tr.portal-table-footer
+                                        td
+                                        td
+                                            | Items per page: 5
+                                        td
+                                            | 1 - 5 of 15
+                                        td
+                                            a.material-icons.portal-table-footer--icon-left(href='#')
+                                                | chevron_left
+                                            a.material-icons.portal-table-footer--icon-right(href='#')
+                                                | chevron_right
+
+block specific-js
+    style(type="text/css").
+        /* Always set the map height explicitly to define the size of the div
+               * element that contains the map. */
+
+    script(src='https://portal.oxygenna.com/html/assets/js/Chart.js')
+    script.
+        (function () {
+            function setupDashboardCharts() {
+                const analyticsCtx = document.getElementById('analyticsChart').getContext('2d');
+                const usersCtx = document.getElementById('usersChart').getContext('2d');
+                const sessionsCtx = document.getElementById('sessionsChart').getContext('2d');
+                var primaryColor = window.getComputedStyle(document.documentElement).getPropertyValue('--mdc-theme-primary');
+                var primaryDarkColor = window.getComputedStyle(document.documentElement).getPropertyValue('--mdc-theme-primary-dark');
+                var secondaryColor = window.getComputedStyle(document.documentElement).getPropertyValue('--mdc-theme-secondary');
+                var secondaryLightColor = window.getComputedStyle(document.documentElement).getPropertyValue('--mdc-theme-secondary-light');
+                var secondaryDarkColor = window.getComputedStyle(document.documentElement).getPropertyValue('--mdc-theme-secondary-dark');
+                // Fallback for IE11, whereby getPropertyValue returns an empty string.
+                primaryColor = '' === primaryColor ? '#03A9F4' : primaryColor;
+                primaryDarkColor = '' === primaryDarkColor ? '#424242' : primaryDarkColor;
+                secondaryColor = '' === secondaryColor ? '#FF4081' : secondaryColor;
+                secondaryLightColor = '' === secondaryLightColor ? '#ff87b0' : secondaryLightColor;
+                secondaryDarkColor = '' === secondaryDarkColor ? '#f80054' : secondaryDarkColor;
+                // Users bar chart.
+                const usersChart = new Chart(usersCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['15 minutes ago', '30 minutes ago', '45 minutes ago', '60 minutes ago', '75 minutes ago', '90 minutes ago', '1 hour ago', '2 hours ago', '3 hours ago', '4 hours ago', '5 hours ago', '6 hours ago', '7 hours ago', '8 hours ago', '9 hours ago', '12 hours ago'],
+                        datasets: [{
+                            label: 'Views:',
+                            data: [12, 19, 34, 57, 22, 39, 46, 37, 56, 48, 28, 43, 55, 27, 12, 26],
+                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                            borderColor: 'rgba(255, 255, 255, 0.5)'
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        animation: false,
+                        scaleShowVerticalLines: false,
+                        responsive: true,
+                        tooltips: {
+                            enabled: true,
+                            backgroundColor: '#ffffff',
+                            titleFontColor: '#00ABEE',
+                            bodyFontColor: 'rgba(0, 171, 238, 0.6)',
+                            xPadding: 20,
+                            yPadding: 20,
+                            displayColors: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: false
+                            }],
+                            yAxes: [{
+                                display: false
+                            }]
+                        }
+                    }
+                });
+                // Sessions doughnut chart
+                const sessionsChart = new Chart(sessionsCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Desktop', 'Tablet', 'Mobile'],
+                        datasets: [{
+                            data: [124, 88, 172],
+                            borderWidth: 0,
+                            backgroundColor: [secondaryColor, secondaryLightColor, secondaryDarkColor],
+                            hoverBackgroundColor: secondaryColor
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            enabled: true,
+                            backgroundColor: '#00ABEE',
+                            titleFontColor: '#ffffff',
+                            bodyFontColor: '#ffffff',
+                            xPadding: 20,
+                            yPadding: 20,
+                            displayColors: false
+                        }
+                    }
+                });
+                const analyticsChart = new Chart(analyticsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                        datasets: [{
+                            label: false,
+                            data: [3479, 1250, 1600, 4900, 5250, 2750, 5500],
+                            backgroundColor: 'rgba(255, 255, 255, 0)',
+                            borderColor: primaryColor,
+                            borderWidth: 2,
+                            pointBackgroundColor: secondaryColor,
+                            pointBorderColor: secondaryColor,
+                            lineTension: 0.45
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: true,
+                            backgroundColor: '#00ABEE',
+                            titleFontColor: '#ffffff',
+                            bodyFontColor: 'rgba(255,255,255,0.6)',
+                            xPadding: 20,
+                            yPadding: 20,
+                            displayColors: false
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+                // Analytics tabs listener. Datasets refresh on TabBarChange.
+                const analyticsTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#portal-stats-chart-nav'));
+                analyticsTabBar.layout();
+                analyticsTabBar.listen('MDCTabBar:change', function (t) {
+                    for (var i = 0; i < analyticsChart.data.datasets[0].data.length; i++) {
+                        analyticsChart.data.datasets[0].data[i] = Math.floor(Math.random() * 6000) + 200;
+                    }
+                    analyticsChart.update();
+                });
+                const clientsTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#portal-table-nav'));
+                clientsTabBar.layout();
+                // Client acquisition tabs listener.
+                clientsTabBar.listen('MDCTabBar:change', function (t) {
+                    const detailTabBar = t.detail;
+                    const index = detailTabBar.activeTabIndex;
+                    const panels = document.querySelector('#clients-table-tabs');
+                    portalUpdateTabPanels(panels, index);
+                });
+                // We need to relayout all tabs when switching to rtl.
+                const body = document.getElementsByTagName('body').item(0);
+                body.addEventListener('portalDirectionChanged', function () {
+                    analyticsTabBar.layout();
+                    clientsTabBar.layout();
+                });
+            }
+
+            function portalUpdateTabPanels(panels, index) {
+                const activePanel = panels.querySelector('.portal-table-tab-panel.portal-table-tab-panel--active');
+                if (activePanel) {
+                    activePanel.classList.remove('portal-table-tab-panel--active');
+                }
+                const newActivePanel = panels.querySelector('.portal-table-tab-panel:nth-child(' + (index + 1) + ')');
+                if (newActivePanel) {
+                    newActivePanel.classList.add('portal-table-tab-panel--active');
+                }
+            }
+
+            // Wait 1sec before initializing the charts so the switcher CSS works.
+            setTimeout(setupDashboardCharts, 1000);
+            const body = document.getElementsByTagName('body').item(0);
+            body.addEventListener('portalThemeChanged', setupDashboardCharts);
+        })();

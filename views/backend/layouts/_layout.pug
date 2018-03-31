@@ -1,0 +1,50 @@
+doctype html
+html(lang="en")
+
+	//- Variables to set active page in sidebar
+	block variables
+		- var activePage = 'dashboard'
+
+	head
+		base(href='/')
+
+		include ../includes/_head.pug
+
+	body.mdc-typography.pace-on
+		// Loader
+		include ../includes/_loader.pug
+
+		.portal-wrapper
+			// Sidebar menu
+			include ../includes/_sidebar.pug
+
+			// Main
+			main.portal-main
+				// Header
+				include ../includes/_header.pug
+
+				// Content
+				block content
+
+				// Footer
+				include ../includes/_footer.pug
+
+			include ../includes/_asider.pug
+
+
+		//- Javascripts
+		include ../includes/_javascript.pug
+
+		// Page specific javascripts
+		block specific-js
+
+		script.
+			mdc.autoInit()
+			// an scrollbar cho trinh duyet firefox do khong dung css trick duoc
+			if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+				var element = document.getElementById('portal-navigation');
+				var scrollBarWidth = element.offsetWidth - element.clientWidth;
+				element.style.marginRight = (scrollBarWidth*-1)+'px';
+				var siderbar = document.getElementById('nav-drawer');
+				siderbar.style.overflowX = 'hidden';
+			}

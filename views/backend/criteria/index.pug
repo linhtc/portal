@@ -1,0 +1,294 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'criteria'
+    - var activeGroup = 'management'
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-th-list
+                |  Quản lý Tiêu chí
+            p Chuột phải lên mục để hiện menu thao tác
+
+        ul.app-breadcrumb.breadcrumb.side
+            li.breadcrumb-item
+                i.fa.fa-home.fa-lg
+            li.breadcrumb-item
+                | Quản lý
+            li.breadcrumb-item.active
+                a(href="#") Tiêu chí
+
+    .row
+        .col-md-12
+            .tile
+                .tile-title-w-btn
+                    h3.title#title-content Tiêu chí
+                    p
+                        if permission.edit
+                            a.btn.btn-primary.icon-btn(href="#")#saveButton
+                                i.fa.fa-save
+                                | Lưu lại
+                .tile-body#detail-tree-body
+                    #detail-tree
+
+block specific-js
+    // Data table plugin
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.dataTables.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.buttons.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.select.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/buttons.html5.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/bootstrap-notify.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/sweetalert.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.blockUI.js')
+    script(type='text/javascript', src="/public/backend/js/plugins/select2.min.js")
+    script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/bootstrap-datepicker.min.js")
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/buttons.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/select.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css')
+    style(type='text/css').
+        .vakata-context {
+            z-index: 9999;
+        }
+
+        .jstree-default .jstree-anchor {
+            line-height: 24px;
+            min-height: 24px;
+            height: auto !important;
+            white-space: normal !important;
+            text-indent: -3.3em !important;
+            padding-left: 3.3em !important;
+            padding-right: 1em !important;
+        }
+    script(type='text/javascript').
+        var permission = !{JSON.stringify(permission)};
+        var treeID = '#detail-tree';
+        $(document).ready(function () {
+            $.ajax({
+                type: 'post',
+                url: 'data',
+                data: { },
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+                    if (result.status === 1) {
+                        var item = result.item;
+                        var thisData = item.detail;
+                        if (typeof thisData === 'undefined') {
+                            thisData = {id: item._id, text: item.criterion};
+                        }
+                        if ($.jstree.reference($(treeID))) {
+                            $(treeID).jstree().delete_node($(treeID).jstree().get_json());
+                            $(treeID).jstree(true).settings.core.data = thisData;
+                            $(treeID).jstree(true).refresh();
+                        } else {
+                            $(treeID).jstree({
+                                "core": {
+                                    "animation": 0,
+                                    "check_callback": true,
+                                    "themes": {"stripes": true},
+                                    'data': thisData
+                                },
+                                "types": {
+                                    "#": {
+                                        // "max_children": 1,
+                                        // "max_depth": 4,
+                                        // "valid_children": ["root"]
+                                    },
+                                    "root": {
+                                        // "icon": "glyphicon glyphicon-file",
+                                        // "valid_children": ["default"]
+                                    },
+                                    "default": {
+                                        // "valid_children": ["default", "file"]
+                                    },
+                                    "file": {
+                                        // "icon": "glyphicon glyphicon-file",
+                                        // "valid_children": []
+                                    }
+                                },
+                                "plugins": [
+                                    "contextmenu", "dnd", "search",
+                                    "state", "types", "wholerow"
+                                ],
+                                'contextmenu': {
+                                    'items': function (node) {
+                                        if(typeof node.data !== 'object'){
+                                            node.data = {evaluation: 0, prove_report: '', prove_email: ''};
+                                        }
+                                        var tree = $(treeID).jstree(true);
+                                        var actions = {};
+                                        if(permission.create !== undefined){
+                                            actions. Create = {
+                                                separator_before: false,
+                                                separator_after: false,
+                                                label: 'Thêm mới',
+                                                _disabled: false,
+                                                action: function (obj) {
+                                                    var $node = tree.create_node(node);
+                                                    tree.edit($node);
+                                                }
+                                            };
+                                        }
+                                        if(node.parent === '#'){
+                                            if(permission.edit !== undefined){
+                                                actions.Save = {
+                                                    separator_before: false,
+                                                    separator_after: false,
+                                                    label: 'Lưu lại',
+                                                    action: function (obj) {
+                                                        try {
+                                                            var tree = $('#detail-tree').jstree(true).get_json('#', {flat: true});
+                                                            var info = {
+                                                                _id: $('#__id').val(),
+                                                                detail: JSON.stringify(tree)
+                                                            };
+                                                            $('#detail-tree-body').block({
+                                                                message: '<i class="fa fa-spinner fa-spin fa-5x text-white"></i>',
+                                                                css: {backgroundColor: 'none', border: 'none'}
+                                                            });
+                                                            $.ajax({
+                                                                type: 'post',
+                                                                url: 'save-detail',
+                                                                data: info,
+                                                                dataType: 'json',
+                                                                success: function (result) {
+                                                                    $('#detail-tree-body').unblock();
+                                                                    if (result.status === 1) {
+
+                                                                    } else {
+
+                                                                    }
+                                                                },
+                                                                error: function (XMLHttpRequest) {
+                                                                    console.log(XMLHttpRequest.statusText);
+                                                                }
+                                                            });
+                                                        } catch (e) {
+                                                            console.log(e.message);
+                                                        }
+                                                    }
+                                                };
+                                            }
+                                            return actions;
+                                        }
+                                        if(permission.edit !== undefined) {
+                                            actions.Rename = {
+                                                separator_before: false,
+                                                separator_after: false,
+                                                label: 'Nội dung',
+                                                action: function (obj) {
+                                                    tree.edit(node);
+                                                }
+                                            };
+                                            actions.Edit = {
+                                                separator_before: false,
+                                                separator_after: false,
+                                                label: 'Chấm điểm',
+                                                action: function (obj) {
+                                                    var point = node.a_attr.point;
+                                                    if (point === undefined) {
+                                                        point = 0;
+                                                    }
+                                                    $('.jstree-contextmenu').hide(100, 'swing', function () {
+                                                        var promptPoint = prompt("Nhập điểm", point);
+                                                        if (promptPoint != null) {
+                                                            node.a_attr.point = promptPoint;
+                                                            node.icon = '/public/backend/images/number/' + promptPoint + '.png';
+                                                            node.data = {
+                                                                evaluation: 0,
+                                                                prove_report: '',
+                                                                prove_email: '',
+                                                                point: promptPoint
+                                                            };
+                                                            tree.edit(node);
+                                                        }
+                                                    });
+                                                }
+                                            };
+                                        }
+                                        if(permission.remove !== undefined) {
+                                            actions.Remove = {
+                                                separator_before: true,
+                                                separator_after: false,
+                                                label: 'Xóa bỏ',
+                                                action: function (obj) {
+                                                    $('.jstree-contextmenu').hide(100, 'swing', function () {
+                                                        if (confirm('Xác nhận xóa?')) {
+                                                            tree.delete_node(node);
+                                                        }
+                                                    });
+                                                }
+                                            };
+                                        }
+                                        return actions;
+                                    }
+                                }
+                            });
+                        }
+                        $('#__id').val(item._id);
+                    } else {
+                        $.notify({
+                            title: "Lỗi: ",
+                            message: result.message,
+                            icon: 'fa fa-check'
+                        }, {
+                            type: "warning",
+                            delay: 1000
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest) {
+                    swal("Cancelled", XMLHttpRequest.statusText, "error");
+                }
+            });
+        });
+        $('#saveButton').click(function () {
+            try {
+                var tree = $('#detail-tree').jstree(true).get_json('#', {flat: true});
+                var info = {
+                    _id: $('#__id').val(),
+                    detail: JSON.stringify(tree)
+                };
+                $('#detail-tree-body').block({
+                    message: '<i class="fa fa-spinner fa-spin fa-5x text-white"></i>',
+                    css: {backgroundColor: 'none', border: 'none'}
+                });
+                $.ajax({
+                    type: 'post',
+                    url: 'save-detail',
+                    data: info,
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#detail-tree-body').unblock();
+                        if (result.status === 1) {
+                            $.notify({
+                                title: "Lưu: ",
+                                message: "Thành công",
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "success",
+                                delay: 1000
+                            });
+                        } else {
+                            $.notify({
+                                title: "Lỗi: ",
+                                message: result.message,
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "danger",
+                                delay: 1000
+                            });
+                        }
+                    },
+                    error: function (XMLHttpRequest) {
+                        console.log(XMLHttpRequest.statusText);
+                    }
+                });
+            } catch (e) {
+                console.log(e.message);
+            }
+        });
+

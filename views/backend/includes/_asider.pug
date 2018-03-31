@@ -1,0 +1,118 @@
+aside#notifications-drawer.mdc-drawer.mdc-drawer--temporary.mdc-drawer--portal-flex-content.mdc-drawer--portal-right
+	nav.mdc-drawer__drawer
+		nav#notification-tab-bar.mdc-tab-bar(role='tablist')
+			a.mdc-tab.mdc-tab--active Today
+			a.mdc-tab Notifications
+			span.mdc-tab-bar__indicator
+		#notification-panels.mdc-drawer__content.portal-hide-scrollbars.portal-notification-panels
+			.portal-notifications-tab-panel.portal-tab-panel.portal-tab-panel--active(role='tabpanel', aria-hidden='false')
+				h1.portal-notifications-tab-panel__title.mdc-typography--display1
+					| Thursday, January 19, 2018
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h1.portal-notification-card__title Weather
+					ul.mdc-list.mdc-list--two-line.mdc-list--non-interactive.mdc-list--portal-weather
+						li.mdc-list-item
+							img.mdc-list-item__graphic(src='http://l.yimg.com/a/i/us/we/52/30.gif', alt='London')
+							.mdc-list-item__text
+								| London
+								span.mdc-list-item__secondary-text Cloudy
+							span.mdc-list-item__meta 45°
+						li.mdc-list-item
+							img.mdc-list-item__graphic(src='http://l.yimg.com/a/i/us/we/52/31.gif', alt='New York')
+							.mdc-list-item__text
+								| New York
+								span.mdc-list-item__secondary-text Clear
+							span.mdc-list-item__meta 18°
+						li.mdc-list-item
+							img.mdc-list-item__graphic(src='http://l.yimg.com/a/i/us/we/52/31.gif', alt='Sydney')
+							.mdc-list-item__text
+								| Sydney
+								span.mdc-list-item__secondary-text Clear
+							span.mdc-list-item__meta 69°
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h1.portal-notification-card__title Schedule
+					ul.mdc-list.mdc-list--two-line.mdc-list--non-interactive.mdc-list--portal-schedule
+						li.mdc-list-item
+							.mdc-list-item__text
+								h4.portal-notification-card__subtitle Go for a walk with Peach
+								span.mdc-list-item__secondary-text
+									i.material-icons.mdc-theme--primary place
+									|  Mushroom Kingdom
+							span.mdc-list-item__meta 9:30
+						li.mdc-list-item
+							.mdc-list-item__text
+								h4.portal-notification-card__subtitle Meeting with Bowser
+								span.mdc-list-item__secondary-text
+									i.material-icons.mdc-theme--primary place
+									|  Peach's Castle
+							span.mdc-list-item__meta 11:22
+						li.mdc-list-item
+							.mdc-list-item__text
+								h4.portal-notification-card__subtitle Rescue Peach
+								span.mdc-list-item__secondary-text
+									i.material-icons.mdc-theme--primary place
+									|  Bowser's Castle
+							span.mdc-list-item__meta 11:15
+			.portal-notifications-tab-panel.portal-tab-panel(role='tabpanel', aria-hidden='true')
+				h1.portal-notifications-tab-panel__title.mdc-typography--headline
+					| Today
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h2.portal-notification-card__title
+							i.fa.fa-comments.portal-social-circle-icon.portal-social-circle-icon--message
+							|                                 Message
+						.mdc-typography--caption
+							span 5 min ago
+							i.material-icons clear
+					section.portal-notification-card__content
+						h4.portal-notification-card__subtitle Progress Report
+						|                             Hi, please find attached report...
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h2.portal-notification-card__title
+							i.fa.fa-facebook.portal-social-circle-icon.portal-social-circle-icon--facebook
+							|                                 Facebook
+						.mdc-typography--caption
+							span 10 min ago
+							i.material-icons clear
+					section.portal-notification-card__content
+						| You received a new message
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h2.portal-notification-card__title
+							i.fa.fa-slack.portal-social-circle-icon.portal-social-circle-icon--slack
+							|                                 Slack
+						.mdc-typography--caption
+							span 15 min ago
+							i.material-icons clear
+					section.portal-notification-card__content
+						h4.portal-notification-card__subtitle #Support
+						|                             Hi there, got some news...
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h2.portal-notification-card__title
+							i.fa.fa-twitter.portal-social-circle-icon.portal-social-circle-icon--twitter
+							|                                 Twitter
+						.mdc-typography--caption
+							span 1 hour ago
+							i.material-icons clear
+					section.portal-notification-card__content
+						h4.portal-notification-card__subtitle Web design trends
+						|                             #web #design
+				.mdc-card.portal-notification-card
+					section.mdc-card__primary
+						h2.portal-notification-card__title
+							i.fa.fa-spotify.portal-social-circle-icon.portal-social-circle-icon--spotify
+							|                                 Spotify
+						.mdc-typography--caption
+							span 2 hours ago
+							i.material-icons clear
+					section.portal-notification-card__content
+						h4.portal-notification-card__subtitle No Quarter
+						|                             Led Zeppelin
+		footer.mdc-toolbar.mdc-theme--text-primary-on-primary-light.mdc-theme--primary-light-bg.mdc-toolbar--portal-no-shrink
+			.mdc-toolbar__row
+				section.mdc-toolbar__section.mdc-toolbar__section--align-start
+					a.material-icons.mdc-toolbar__menu-icon.portal-drawer-notification-collapse-icon(href='#') chevron_right

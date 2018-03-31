@@ -1,0 +1,540 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'users'
+    - var activeGroup = 'management'
+
+block content
+    .portal-main__content.mdc-theme--background.mdc-theme--text-primary-on-background
+        .mdc-layout-grid
+            .mdc-layout-grid__inner
+                .portal-widget.mdc-layout-grid__cell--span-12-desktop.mdc-layout-grid__cell--span-12-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Quản lý Người dùng
+                    .mdc-card.mdc-card--portal-fullheight
+                        table.mdl-data-table.table#infoTable
+                            thead
+                                tr
+                                    th
+                                    th ID
+                                    th STT
+                                    th Họ tên
+                                    th Tài khoản
+                                    th Điện thoại
+                                    th Email
+                                    th Giới tính
+                                    th Địa chỉ
+                                    th Nhóm
+                            tbody
+
+                            tfoot
+                                tr
+                                    th
+                                    th ID
+                                    th STT
+                                    th Họ tên
+                                    th Tài khoản
+                                    th Điện thoại
+                                    th Email
+                                    th Giới tính
+                                    th Địa chỉ
+                                    th Nhóm
+
+
+            input.form-control(type="file", accept='.csv', style="display:none;")#importFile
+            aside#mdc-dialog-default.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
+                .mdc-dialog__surface
+                    header.mdc-dialog__header
+                        h2#mdc-dialog-with-list-label.mdc-dialog__header__title
+                            | Thêm/Sửa thông tin
+                    section#mdc-dialog-with-list-description.mdc-dialog__body.mdc-dialog__body--scrollable
+                        .mdc-layout-grid(style="padding: 0;")
+                            .mdc-layout-grid__inner
+                                .mdc-layout-grid__cell--span-12-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                                    .mdc-layout-grid
+                                        .mdc-layout-grid__inner
+                                            .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                    input#fullname.params.mdc-text-field__input(required='', type='text', aria-controls='fullname-validation-msg')
+                                                    label.mdc-floating-label(for='fullname') Họ và tên
+                                                    .mdc-line-ripple
+                                                p#fullname-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Điền đầy đủ họ, chữ lót và tên
+
+                                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                    input#phone.params.mdc-text-field__input(required='', type='text', aria-controls='phone-validation-msg')
+                                                    label.mdc-floating-label(for='phone') Điện thoại
+                                                    .mdc-line-ripple
+                                                p#phone-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Nhập số điện thoại di động
+
+                                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                    input#email.params.mdc-text-field__input(required='', type='text', aria-controls='email-validation-msg')
+                                                    label.mdc-floating-label(for='email') Email
+                                                    .mdc-line-ripple
+                                                p#email-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Điền hộp thư điện tử
+
+                                                .mdc-form-field(style='margin-top:10px;')
+                                                    .mdc-radio
+                                                        input#male.params.mdc-radio__native-control(type='radio', checked='', name='gender', value='Nam')
+                                                        .mdc-radio__background
+                                                            .mdc-radio__outer-circle
+                                                            .mdc-radio__inner-circle
+                                                    label#ex0-default-radio1-label(for='male') Nam
+                                                    .mdc-radio
+                                                        input#female.params.mdc-radio__native-control(type='radio', name='gender', value='Nữ')
+                                                        .mdc-radio__background
+                                                            .mdc-radio__outer-circle
+                                                            .mdc-radio__inner-circle
+                                                    label#ex0-default-radio2-label(for='female') Nữ
+                                                p#gender-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Chọn giới tính
+
+                                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                    input#avatarFile.mdc-text-field__input(style='display:none;', type='file', accept='image/*', aria-controls='email-validation-msg')
+                                                    input#avatar.params.mdc-text-field__input(type="text", readonly='', onclick='$("#avatarFile").click();')
+                                                    label.mdc-floating-label(for='avatarFile') Avatar
+                                                    .mdc-line-ripple
+                                                p#email-validation-msg2.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Tải ảnh đại diện từ máy lên
+
+                                            .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                    input#username.params.mdc-text-field__input(required='', type='text', aria-controls='username-validation-msg')
+                                                    label.mdc-floating-label(for='username') Tài khoản
+                                                    .mdc-line-ripple
+                                                p#username-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Tài khoản để đăng nhập hệ thống
+
+                                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                    input#password.params.mdc-text-field__input(required='', pattern='.{3,}', type='password', aria-controls='password-validation-msg', autocomplete='current-password')
+                                                    label.mdc-floating-label(for='password') Mật khẩu
+                                                    .mdc-line-ripple
+                                                p#password-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                    | Tối thiểu 3 ký tự
+
+                                                #group.params.mdc-select(role='listbox', style='width:100%;')
+                                                    .mdc-select__surface(tabindex='0')
+                                                        .mdc-select__label Nhóm
+                                                        .mdc-select__selected-text
+                                                        .mdc-select__bottom-line
+                                                    .mdc-menu.mdc-select__menu
+                                                        ul.mdc-list.mdc-menu__items
+                                                            each group in groups
+                                                                li#group.mdc-list-item(role='option', tabindex='0', value=group.key)
+                                                                    =group.name
+                                                p#group-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg(style='margin-top:8px;')
+                                                    | Chọn nhóm để phân quyền
+
+                                                .mdc-text-field.mdc-text-field--textarea.mdc-text-field--fullwidth.full-width-textarea-example(style='margin-top:24px;')
+                                                    textarea#address.params.mdc-text-field__input(rows='5')
+                                                    label.mdc-floating-label(for='address') Địa chỉ
+                                                    .mdc-line-ripple
+                                                input.form-control(type="hidden").params#_id
+                    footer.mdc-dialog__footer
+                        span#infoError.error
+                        button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Đóng
+                        button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--accept-custom#saveInfo(type='button') Lưu
+                .mdc-dialog__backdrop
+
+block specific-js
+    // Data table plugin
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.dataTables.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.buttons.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.select.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/buttons.html5.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/notify.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/sweet.alert.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.blockUI.js')
+    script(type='text/javascript', src="/public/backend/js/plugins/select2.min.js")
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/buttons.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/select.dataTables.min.css')
+    script(type='text/javascript').
+        var thatUrl = '#{url}';
+        var permission = !{JSON.stringify(permission)};
+        var infoTable = null;
+        var _this = null;
+        var optionSelect = {placeholder: 'Chọn nhóm'};
+        var buttons = [];
+        var dialog = null;
+        var groupMap = !{JSON.stringify(groups)};
+        var groupIndex = {};
+        try{
+            for(var gIndex=0; gIndex<groupMap.length; gIndex++){
+                groupIndex[groupMap[gIndex].key] = gIndex;
+            }
+        } catch (exx){
+            console.log(exx.message);
+        }
+        var selectBag = {};
+        if(permission.export !== undefined){
+            buttons.push({
+                extend: 'csvHtml5',
+                text: 'Tải',
+                exportOptions: {
+                    columns: [2, 3, 4, 5, 6, 7, 8]
+                }
+            });
+        }
+        if (permission.import !== undefined) {
+            buttons.push({
+                text: 'Nhập',
+                action: function (e, dt, node, config) {
+                    e.preventDefault();
+                    _this = node;
+                    $("#importFile").val('').click();
+                }
+            });
+            buttons.push({
+                text: 'Mẫu',
+                action: function (e, dt, node, config) {
+                    e.preventDefault();
+                    window.location = '/public/backend/files/UserTheme.csv';
+                }
+            });
+        }
+        if (permission.create !== undefined) {
+            buttons.push({
+                text: 'Tạo',
+                action: function (e, dt, node, config) {
+                    $('.params:input:not([type=radio])').val('');
+                    $("#avatarFile").val('');
+                    $('#username').attr('readonly', false);
+                    $('#password').attr('required', true);
+                    $('#infoModalTitle').text('Thêm mới');
+                    $('#infoError').text('').hide();
+                    dialog.lastFocusedTarget = e.target;
+                    dialog.show();
+                }
+            });
+        }
+        if (permission.remove !== undefined) {
+            buttons.push({
+                text: 'Xóa',
+                action: function (e, dt, node, config) {
+                    var rowSelected = $('#infoTable').find('.selected td:nth-child(2)');
+                    if (rowSelected.length < 1) {
+                        node.notify('Chọn ít nhất 1 dòng. Ctrl + click để chọn nhiều!', {className: 'error', position: 'top center'});
+                    } else {
+                        swal({
+                            title: "Chắc chắn xóa?",
+                            text: "Dữ liệu đã xóa sẽ không thể phục hồi!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Xác nhận",
+                            cancelButtonText: "Hủy bỏ",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                var list = [];
+                                rowSelected.each(function () {
+                                    var item = infoTable.row(this).data();
+                                    list.push(item[1]);
+                                });
+                                if (list.length > 0) {
+                                    $.ajax({
+                                        type: 'post',
+                                        url: thatUrl+'remove',
+                                        data: {list: list.toString()},
+                                        dataType: 'json',
+                                        success: function (result) {
+                                            if (result.status === 1) {
+                                                infoTable.ajax.reload();
+                                                swal("Deleted!", "Dữ liệu đã được xóa!", "success");
+                                            } else {
+                                                swal("Cancelled", result.message, "error");
+                                            }
+                                        },
+                                        error: function (XMLHttpRequest) {
+                                            swal("Cancelled", XMLHttpRequest.statusText, "error");
+                                        }
+                                    });
+                                }
+                            } else {
+                                swal("Cancelled", "Your imaginary file is safe :)", "error");
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        if (permission.edit !== undefined) {
+            buttons.push({
+                text: 'Sửa',
+                action: function (e, dt, node, config) {
+                    var rowSelected = $('#infoTable').find('.selected td:nth-child(2)');
+                    if (rowSelected.length !== 1) {
+                        node.notify('Chọn duy nhất 1 dòng!', {className: 'error', position: 'top center'});
+                    } else {
+                        rowSelected.each(function () {
+                            var item = infoTable.row(this).data();
+                            $.ajax({
+                                type: 'post',
+                                url: thatUrl+'data',
+                                data: {_id: item[1]},
+                                dataType: 'json',
+                                success: function (result) {
+                                    if (result.status === 1) {
+                                        var item = result.item;
+                                        Object.keys(item).forEach(function (key) {
+                                            if (key === 'gender') {
+                                                if (item[key] === 'Nam') {
+                                                    $("#male").prop("checked", true);
+                                                } else {
+                                                    $("#female").prop("checked", true);
+                                                }
+                                            } else if(key === 'group') {
+                                                console.log(item[key]);
+                                                console.log(groupIndex[item[key]]);
+                                                if(groupIndex[item[key]] !== undefined){
+                                                    console.log(groupIndex[item[key]]);
+                                                    console.log(selectBag[key].selectedIndex = groupIndex[item[key]]);
+                                                }
+                                            } else {
+                                                var keyID = '#' + key;
+                                                $(keyID).val(item[key]);
+                                                $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
+                                            }
+                                        });
+                                        $("#avatarFile").val('');
+                                        $('#password').attr('required', false);
+                                        $('#username').attr('readonly', true);
+                                        $('#infoModalTitle').text('Sửa lại');
+                                        $('#infoError').text('').hide();
+                                        dialog.lastFocusedTarget = e.target;
+                                        dialog.show();
+                                    } else {
+                                        node.notify(result.message, {className: 'error', position: 'top center'});
+                                    }
+                                },
+                                error: function (XMLHttpRequest) {
+                                    node.notify(XMLHttpRequest.statusText, {className: 'error', position: 'top center'});
+                                }
+                            });
+                            return true;
+                        });
+                    }
+                }
+            });
+        }
+        $(document).ready(function () {
+            const MDCSelect = mdc.select.MDCSelect;
+            const selects = document.querySelectorAll('.mdc-select');
+            for (let i = 0; i < selects.length; i++) {
+                var sel = new MDCSelect(selects[i]);
+                selectBag[sel.root_.id] = sel;
+            }
+            const tfRoot = document.querySelectorAll('.mdc-text-field');
+            for (let i = 0; i < tfRoot.length; i++) {
+                new mdc.textField.MDCTextField(tfRoot[i]);
+            }
+            mdc.dialog.MDCDialog.attachTo(document.querySelector('.mdc-dialog'));
+            dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
+            dialog.listen('MDCDialog:accept', function () {
+                console.log('accepted');
+            });
+            dialog.listen('MDCDialog:cancel', function () {
+                console.log('canceled');
+            });
+            $('#saveInfo').click(function () {
+                var info = {};
+                var allow = true;
+                var params = $('.params');
+                params.each(function () {
+                    if (this.required && this.value.length < 1) {
+                        if (this.placeholder === undefined) {
+                            this.placeholder = optionSelect.placeholder;
+                        }
+                        var msgLabel = $(this).parent().find('.mdc-floating-label');
+                        if(msgLabel.length > 0){
+                            msgLabel = msgLabel[0].textContent+': ';
+                        } else{
+                            msgLabel = '';
+                        }
+                        var msgControl = this.getAttribute('aria-controls');
+                        $('#infoError').text(msgLabel+''+$('#'+msgControl).text()).hide().show(500);
+                        allow = false;
+                        return allow;
+                    }
+                    if (this.type === undefined && this.getAttribute('role') === 'listbox') {
+                        if(selectBag[this.id]['selectedOptions'].length > 0){
+                            info[this.id] = selectBag[this.id]['selectedOptions'][0]['attributes']['value']['nodeValue'];
+                        } else{
+                            info[this.id] = '';
+                        }
+                    } else if (this.type === 'radio') {
+                        if(this.checked){
+                            info[this.name] = this.value;
+                        }
+                    } else {
+                        info[this.id] = this.value;
+                    }
+                });
+                if (allow) {
+                    $('#infoError').text('').hide();
+                    $('#saveInfo').notify("Hệ thống đang xử lý", {className: 'info', position: 'right top'});
+                    $.ajax({
+                        type: 'post',
+                        url: thatUrl + 'save',
+                        data: info,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.status === 1) {
+                                infoTable.ajax.reload();
+                                $('#saveInfo').notify(result.message, {className: 'success', position: 'right top'});
+                                dialog.close();
+                            } else {
+                                $('#infoError').text(result.message).show(500);
+                                $('#saveInfo').notify(result.message, {className: 'error', position: 'right top'});
+                            }
+                        },
+                        error: function (XMLHttpRequest) {
+                            $('#infoError').text(XMLHttpRequest.statusText).show(500);
+                            $('#saveInfo').notify(result.message, {className: 'error', position: 'right top'});
+                        }
+                    });
+                }
+            });
+            infoTable = $('#infoTable').DataTable({
+                dom: 'Bfrtip',
+                ajax: {
+                    url: thatUrl+'data',
+                    type: 'POST',
+                    data: {}
+                },
+                fnInitComplete: function (oSettings) {
+                    setTimeout(function () {
+                        // language=JQuery-CSS
+                        $('.table tfoot th').each(function (index) {
+                            if (index < 1) {
+                                return;
+                            }
+                            var title = $(this).text();
+                            var date = new Date;
+                            var element = document.createElement("INPUT");
+                            element.type = 'text';
+                            element.classList.add('filter-data');
+                            element.placeholder = 'Lọc theo ' + title;
+                            element.title = 'Lọc theo ' + title;
+                            element.id = Math.random() + '_' + date.getUTCMilliseconds();
+                            $(this).html(element);
+                        });
+                        infoTable.columns().every(function (index) {
+                            var that = this;
+                            $('input', this.footer()).val('');
+                            $('input', this.footer()).on('keyup change', function () {
+                                // var tmpID = $(this).attr('id');
+                                // table.draw();
+                                if (that.search() !== this.value) {
+                                    that.search(this.value).draw();
+                                }
+                            });
+                        });
+                    }, 10);
+                },
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }, {
+                    targets: [1],
+                    visible: false
+                }, {
+                    searchable: false,
+                    targets: 1
+                }],
+                select: {
+                    style: 'os'
+                },
+                order: [[2, 'desc']],
+                pagingType: 'simple_numbers',
+                buttons: buttons
+            });
+            $("#avatarFile").change(function (e) {
+                files = e.target.files;
+                var formData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    formData.append('file', file, file.name);
+                }
+                var avatarID = '#avatar';
+                $.ajax({
+                    url: '/backend/cdn/single',
+                    type: 'post',
+                    data: formData,
+                    success: function (result) {
+                        if(result.status === 1){
+                            $(avatarID).val(result.path);
+                            $(avatarID).parent().find('label').addClass('mdc-floating-label--float-above');
+                        } else{
+                            $(avatarID).val('');
+                            $(avatarID).parent().find('label').removeClass('mdc-floating-label--float-above');
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $('#avatar').val('');
+                        $(avatarID).parent().find('label').removeClass('mdc-floating-label--float-above');
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+            $("#importFile").change(function (e) {
+                if(_this !== null){
+                    $(_this).block({message:'<i class="fa fa-spinner fa-spin text-white"></i>', css:{backgroundColor:'none', border:'none'}});
+                }
+                files = e.target.files;
+                var formData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    formData.append('file', file, file.name);
+                }
+                formData.append('collection', 'users');
+                $.ajax({
+                    url: '/backend/cdn/import',
+                    type: 'post',
+                    data: formData,
+                    success: function (result) {
+                        $(_this).unblock();
+                        if(result.status === 1){
+                            infoTable.ajax.reload();
+                            $.notify({
+                                title: "Thành công: ",
+                                message: result.message,
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "success",
+                                delay: 1000
+                            });
+                        } else{
+                            $.notify({
+                                title: "Lỗi: ",
+                                message: result.message,
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "danger",
+                                delay: 1000
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        $(_this).unblock();
+                        $.notify({
+                            title: "Lỗi: ",
+                            message: err.statusText,
+                            icon: 'fa fa-check'
+                        }, {
+                            type: "danger",
+                            delay: 1000
+                        });
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+        });
+

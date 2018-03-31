@@ -1,0 +1,162 @@
+.portal-wrapper__sidenav.portal-wrapper__sidenav--classic.mdc-theme--dark
+	aside#left-drawer.mdc-drawer.mdc-drawer--persistent.mdc-drawer--open.mdc-drawer--portal-flex-content
+		nav.mdc-drawer__drawer#nav-drawer
+			header.mdc-toolbar.mdc-theme--text-primary-on-primary-dark.mdc-theme--primary-dark-bg.mdc-toolbar--portal-no-shrink
+				.mdc-toolbar__row
+					section.mdc-toolbar__section.mdc-toolbar__section--align-start
+						img.mdc-toolbar__logo(src='/public/backend/images/logo/portal-logo.png', alt='Portal')
+						span.mdc-toolbar__title Portal
+			.mdc-list-group.mdc-drawer__content.portal-hide-scrollbars.portal-navigation#portal-navigation
+				nav.mdc-list.portal-navigation-list
+					a.portal-navigation-list__item.mdc-list-item(href='/backend/', class={'mdc-list-item--activated': activePage === 'dashboard'})
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') dashboard
+							|           Tổng quan
+						span.portal-badge.portal-badge--secondary 3
+					a.portal-navigation-list__item.mdc-list-item(href='/backend/users/', class={'mdc-list-item--activated': activePage === 'users'})
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') palette
+							|           Người dùng
+				h3.mdc-list-group__subheader.portal-navigation__subheader APPS
+				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon desktop_windows
+							|         Apps
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='email.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') email
+								|             Email
+						a.portal-navigation-list__item.mdc-list-item(href='todo.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') check_circle
+								|             Todo
+						a.portal-navigation-list__item.mdc-list-item(href='maps.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') pin_drop
+								|             Maps
+						a.portal-navigation-list__item.mdc-list-item(href='chat.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') chat
+								|             Chat
+						a.portal-navigation-list__item.mdc-list-item(href='contacts.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') face
+								|             Contacts
+						a.portal-navigation-list__item.mdc-list-item(href='notes.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') event_note
+								|             Notes
+						a.portal-navigation-list__item.mdc-list-item(href='calendar.html')
+							span.portal-navigation-list__text
+								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') date_range
+								|             Calendar
+				h3.mdc-list-group__subheader.portal-navigation__subheader USER INTERFACE
+				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
+					a.portal-navigation-list__item.mdc-list-item(href='typography.html')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') text_format
+							|           Typography
+					a.portal-navigation-list__item.mdc-list-item(href='colors.html')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') palette
+							|           Colors
+				h3.mdc-list-group__subheader.portal-navigation__subheader PAGES
+				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon perm_identity
+							|         Authentication
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='login.html')
+							span.portal-navigation-list__text
+								| Login
+						a.portal-navigation-list__item.mdc-list-item(href='register.html')
+							span.portal-navigation-list__text
+								| Register
+						a.portal-navigation-list__item.mdc-list-item(href='forgot-password.html')
+							span.portal-navigation-list__text
+								| Forgot Password
+						a.portal-navigation-list__item.mdc-list-item(href='lock.html')
+							span.portal-navigation-list__text
+								| Lock
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon error
+							|         Errors
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='404.html')
+							span.portal-navigation-list__text
+								| 404
+						a.portal-navigation-list__item.mdc-list-item(href='500.html')
+							span.portal-navigation-list__text
+								| 500
+				h3.mdc-list-group__subheader.portal-navigation__subheader ELEMENTS
+				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon extension
+							|         Form Controls
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='checkbox.html')
+							span.portal-navigation-list__text
+								| Checkbox
+						a.portal-navigation-list__item.mdc-list-item(href='input.html')
+							span.portal-navigation-list__text
+								| Input
+						a.portal-navigation-list__item.mdc-list-item(href='radio.html')
+							span.portal-navigation-list__text
+								| Radio
+						a.portal-navigation-list__item.mdc-list-item(href='select.html')
+							span.portal-navigation-list__text
+								| Select
+						a.portal-navigation-list__item.mdc-list-item(href='slider.html')
+							span.portal-navigation-list__text
+								| Slider
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon view_module
+							|         Layout
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='cards.html')
+							span.portal-navigation-list__text
+								| Cards
+						a.portal-navigation-list__item.mdc-list-item(href='tabs.html')
+							span.portal-navigation-list__text
+								| Tabs
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon error
+							|         Buttons & Indicators
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='buttons.html')
+							span.portal-navigation-list__text
+								| Buttons
+						a.portal-navigation-list__item.mdc-list-item(href='progress.html')
+							span.portal-navigation-list__text
+								| Linear Progress
+					a.mdc-list-item.portal-navigation-list__item(href='#')
+						span.portal-navigation-list__text
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon feedback
+							|         Popups & Modals
+						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+					nav.mdc-list.portal-navigation-list
+						a.portal-navigation-list__item.mdc-list-item(href='dialog.html')
+							span.portal-navigation-list__text
+								| Dialog
+						a.portal-navigation-list__item.mdc-list-item(href='snackbar.html')
+							span.portal-navigation-list__text
+								| Snackbar
+			footer.mdc-toolbar.mdc-theme--text-primary-on-primary-dark.mdc-theme--primary-dark-bg.mdc-toolbar--portal-no-shrink
+				.mdc-toolbar__row
+					section.mdc-toolbar__section.mdc-toolbar__section--align-end
+						a#portal-sidemenu-close-icon.material-icons.mdc-toolbar__menu-icon(href='#')
+							span.portal-navigation-list__text.portal-sidenav-collapse-icon
+								| chevron_left

@@ -1,0 +1,329 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'evaluation'
+    - var activeGroup = 'management'
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-th-list
+                |  Tự đánh giá
+            p Chuột phải lên mục để hiện menu thao tác
+
+        ul.app-breadcrumb.breadcrumb.side
+            li.breadcrumb-item
+                i.fa.fa-home.fa-lg
+            li.breadcrumb-item
+                | Quản lý
+            li.breadcrumb-item.active
+                a(href="#") Tự đánh giá
+
+    .row
+        .col-md-12
+            .tile
+                .tile-title-w-btn
+                    h3.title#title-content Tự đánh giá
+                    p
+                        if permission.edit
+                            a.btn.btn-primary.icon-btn(href="javascript:;")#saveButton
+                                i.fa.fa-save
+                                | Lưu lại
+                .tile-body
+                    #detail-tree
+
+        .clearfix
+
+    .modal.fade#infoModal
+        .modal-dialog(role='document').modal-lg
+            .modal-content#contentInfoModal
+                .modal-header
+                    h5.modal-title#infoModalTitle Chỉnh sửa nội dung
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body
+                    form.form-horizontal
+                        input.form-control(type="hidden").params#_id
+                        .form-group.row
+                            .col-md-12
+                                textarea.form-control(rows="4", placeholder="Nhập nội dung").params#editor
+
+                        .form-group.row
+                            label.control-label.col-md-12.error#infoError Nội dung lỗi
+
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Đóng
+                    button.btn.btn-primary(type='button')#saveInfo Lưu
+
+block specific-js
+    // Data table plugin
+    script(type='text/javascript', src='/public/backend/js/plugins/bootstrap-notify.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/bootstrap-notify.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/sweetalert.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.blockUI.js')
+    script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/jstreetable.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/module.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/hotkeys.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/uploader.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/simditor.js")
+    script(type='text/javascript', src="/public/backend/js/plugins/simditor-upload-file.js")
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css')
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/simditor.css')
+    style(type='text/css').
+        /*.jstree-anchor {*/
+            /*height: auto !important;*/
+            /*white-space: normal !important;*/
+            /*text-indent: -3.3em !important;*/
+            /*padding-left: 3.3em !important;*/
+            /*padding-right: 1em !important;*/
+        /*}*/
+
+        .jstree-anchor {
+            height:auto !important;
+            white-space:normal !important;
+        }
+
+        div.jstree-table-cell-root-detail-tree {
+            line-height: 24px;
+            min-height: auto;
+        }
+
+        .jstree-table-wrapper {
+            border: 1px solid #ccc;
+        }
+
+        .jstree-table-midwrapper a.jstree-clicked:before, .jstree-table-midwrapper a.jstree-hovered:before {
+            position: absolute;
+            left: 0;
+            content: "";
+            height: inherit;
+            z-index: 1;
+            opacity: .3;
+            pointer-events: none;
+            min-height: 24px;
+        }
+
+        .jstree-default .jstree-clicked {
+            background: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .jstree-table-cell {
+            overflow-y: auto;
+            height: auto;
+            min-height: auto !important;
+        }
+    script(type='text/javascript').
+        var treeID = '#detail-tree';
+        editorStatic = null;
+        objStatic = null;
+        elementStatic = null;
+        colStatic = null;
+        _thisStatis = null;
+        bindAttachUpload = function (uploadInput, callback) {
+
+        };
+        $(document).ready(function () {
+            Simditor.locale = 'en-US';
+            $.ajax({
+                type: 'post',
+                url: 'data',
+                data: { },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status === 1) {
+                        var item = result.item;
+                        var thisData = item.evaluation;
+                        if (typeof thisData === 'undefined') {
+                            thisData = {id: item._id, text: item.criterion};
+                        }
+                        if ($.jstree.reference($(treeID))) {
+                            $(treeID).jstree().delete_node($(treeID).jstree().get_json());
+                            $(treeID).jstree(true).settings.core.data = thisData;
+                            $(treeID).jstree(true).refresh();
+                        } else {
+                            $(treeID).jstree({
+                                "core": {
+                                    "check_callback": true,
+                                    'data': thisData
+                                },
+                                "plugins": [
+                                    'contextmenu', "table"
+                                ],
+                                table: {
+                                    columns: [
+                                        {
+                                            width: 500,
+                                            header: "Tiêu chí"
+                                        },
+                                        {
+                                            width: 80,
+                                            value: "point",
+                                            header: "Điểm chuẩn"
+                                        },
+                                        {
+                                            width: 80, value: "evaluation", header: "Tự đánh giá", format: function (v) {
+                                                if (v) {
+                                                    return v;
+                                                    // return '$' + v.toFixed(2)
+                                                }
+                                            }
+                                        },
+                                        {width: 450,value: "prove_report", header: "Chứng minh trong báo cáo"},
+                                        {width: 450,value: "prove_email", header: "Chứng minh gửi qua email"}
+                                    ],
+                                    resizable: true,
+                                    draggable: false,
+                                    contextmenu: true
+                                    // width: 500,
+                                    // height: 300
+                                },
+                                contextmenu: {
+                                    'items': function () {
+                                        return {};
+                                    }
+                                }
+                            });
+                        }
+                        $(treeID).on('ready.jstree', function () {
+                            $(treeID).jstree("open_all");
+                        });
+                        $('#__id').val(item._id);
+                        setTimeout(function(){
+                            var rows = $("div[data-jstreetable]");
+                            for(var index=0; index<rows.length; index++){
+                                var item = rows[index];
+                                var objStatic = $(treeID).jstree(true).get_node($(item).attr('data-jstreetable'));
+                                if(typeof objStatic.data !== 'undefined'){
+                                    var signStatic = objStatic.id;
+                                    var objSignStatic = $('#' + signStatic+'_anchor');
+                                    var maxSizeStatic = objSignStatic.height();
+                                    // console.log(signStatic);
+                                    // console.log(maxSizeStatic);
+                                    var allSignStatic = $('.jstree-table-midwrapper').find("[data-jstreetable='" + signStatic + "']");
+                                    for (var indexStatic = 0; indexStatic < allSignStatic.length; indexStatic++) {
+                                        if ($(allSignStatic[indexStatic]).height() > maxSizeStatic) {
+                                            maxSizeStatic = $(allSignStatic[indexStatic]).height();
+                                            // console.log(maxSizeStatic);
+                                        }
+                                    }
+                                    // console.log(';;;');
+                                    for (indexStatic = 0; indexStatic < allSignStatic.length; indexStatic++) {
+                                        $(allSignStatic[indexStatic]).height(maxSizeStatic);
+                                        // $(allSignStatic[indexStatic]).css({'line-height': maxSizeStatic+'px'});
+                                    }
+                                    objSignStatic.height(maxSizeStatic);
+                                }
+                            }
+                        }, 100);
+                    } else {
+                        $.notify({
+                            title: "Lỗi: ",
+                            message: result.message,
+                            icon: 'fa fa-check'
+                        }, {
+                            type: "warning",
+                            delay: 1000
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest) {
+                    swal("Cancelled", XMLHttpRequest.statusText, "error");
+                }
+            });
+        });
+        $('#saveInfo').click(function () {
+            // console.log(editor.getValue());
+            // console.log(objStatic);
+            // console.log(elementStatic);
+            // console.log(colStatic);
+            if(typeof objStatic === 'object' && typeof colStatic === 'object'){
+                var simValue = editorStatic.getValue();
+                var tree = $(treeID).jstree(true);
+                var node = tree.get_node(objStatic.id);
+                node.data[colStatic.value] = simValue;
+
+                $('#infoModal').modal('hide');
+
+                elementStatic.trigger('update_cell.jstree-table', {
+                    node: objStatic,
+                    col: colStatic.value,
+                    value: simValue,
+                    old: null
+                });
+                _thisStatis._prepare_table(_thisStatis.get_node(objStatic, true), function(){
+                    setTimeout(function(){
+                        var signStatic = objStatic.id;
+                        var objSignStatic = $('#' + signStatic);
+                        var maxSizeStatic = objSignStatic.height();
+                        console.log(maxSizeStatic);
+                        var allSignStatic = $('.jstree-table-midwrapper').find("[data-jstreetable='" + signStatic + "']");
+                        for (var indexStatic = 0; indexStatic < allSignStatic.length; indexStatic++) {
+                            if ($(allSignStatic[indexStatic]).height() > maxSizeStatic) {
+                                maxSizeStatic = $(allSignStatic[indexStatic]).height();
+                            }
+                            console.log(maxSizeStatic);
+                        }
+                        for (indexStatic = 0; indexStatic < allSignStatic.length; indexStatic++) {
+                            $(allSignStatic[indexStatic]).height(maxSizeStatic)
+                        }
+                        objSignStatic.height(maxSizeStatic);
+                        console.log(maxSizeStatic);
+                    }, 100);
+                    var allSignStatic = $('.jstree-table-midwrapper').find("[data-jstreetable='" + objStatic.id + "']");
+                    for (var indexStatic = 0; indexStatic < allSignStatic.length; indexStatic++) {
+                        $(allSignStatic[indexStatic]).css({height: 'auto'});
+                    }
+                });
+            }
+        });
+        $('#saveButton').click(function () {
+            try {
+                var tree = $(treeID).jstree(true).get_json('#', {flat: true});
+                var info = {
+                    detail: JSON.stringify(tree)
+                };
+                $('#detail-tree-body').block({
+                    message: '<i class="fa fa-spinner fa-spin fa-5x text-white"></i>',
+                    css: {backgroundColor: 'none', border: 'none'}
+                });
+                $.ajax({
+                    type: 'post',
+                    url: 'save-detail',
+                    data: info,
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);
+                        $('#detail-tree-body').unblock();
+                        if (result.status === 1) {
+                            $.notify({
+                                title: "Lưu: ",
+                                message: "Thành công",
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "success",
+                                delay: 1000
+                            });
+                        } else {
+                            $.notify({
+                                title: "Lỗi: ",
+                                message: result.message,
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "danger",
+                                delay: 1000
+                            });
+                        }
+                    },
+                    error: function (XMLHttpRequest) {
+                        console.log(XMLHttpRequest.statusText);
+                    }
+                });
+            } catch (e) {
+                console.log(e.message);
+            }
+        });
+

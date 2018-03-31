@@ -1,0 +1,91 @@
+doctype html
+html(lang='en')
+	head
+		meta(charset='UTF-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(http-equiv='X-UA-Compatible', content='ie=edge')
+		title Vasist CMS
+		base(href='/backend/auth/')
+		link(rel="icon", href="/public/favicon.png", type="image/png", sizes="152x152")
+		// load fonts
+		link(href='https://fonts.googleapis.com/icon?family=Material+Icons|Barlow:100,300,400,400i,500,700,900', rel='stylesheet')
+		// Portal Styles
+		link(rel='stylesheet', href='/public/backend/css/classic-light_blue-pink.css')
+		// page specific CSS
+		style(type='text/css').
+			.portal-card--hero .portal-card__content {
+				padding: 24px 48px;
+			}
+
+			.mdc-button--portal-login {
+				background-color: rgba(0, 0, 0, 0.12) !important;
+				color: rgba(0, 0, 0, 0.38) !important;
+				color: var(--mdc-theme-text-disabled-on-light, rgba(0, 0, 0, 0.38)) !important;
+				box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12) !important;
+			}
+
+			@media (max-width: 479px){
+				.mdc-layout-grid__inner {
+					align-items: stretch !important;
+				}
+			}
+	body.mdc-typography
+		.portal-wrapper
+			main.portal-main
+				.portal-main__content.mdc-theme--text-primary-on-light.mdc-theme--secondary-bg-gradient.portal-no-layout-container
+					.mdc-layout-grid.mdc-layout-grid--fullheight
+						.mdc-layout-grid__inner
+							.mdc-layout-grid__cell--span-4-desktop.mdc-layout-grid__cell--span-1-tablet.mdc-layout-grid__cell--span-4-phone
+							.mdc-layout-grid__cell--span-4-desktop.mdc-layout-grid__cell--span-6-tablet.mdc-layout-grid__cell--span-4-phone
+								.mdc-card.portal-card.portal-card--hero.portal-card--horizontal.mdc-elevation--z12
+									.mdc-layout-grid.mdc-layout-grid--fullheight
+										.mdc-layout-grid__inner
+											.mdc-layout-grid__cell--span-12
+												.portal-card__content.portal-card__content--column(style='padding-bottom:0;')
+													section.portal-text-center
+														.portal-card__title.portal-card__title--vertical
+															img.portal-card__logo(src='/public/backend/images/logo/portal-logo.png', alt='logo')
+															h1.portal-card--headline Login
+													section.portal-text-center
+														.portal-card__title.portal-card__title--vertical
+															form#auth(style='width: 100%;', method='post', action='/backend/auth')
+																.mdc-text-field.portal-text-field--fullwidth.mdc-text-field--fullwidth.mdc-text-field--dense
+																	input.form-control(type="hidden", placeholder="Page", name="page", value=page)
+																	input#username.mdc-text-field__input(type='text', name='username')
+																	label.mdc-floating-label(for='username') Email Address
+																	.mdc-line-ripple
+																.mdc-text-field.portal-text-field--fullwidth.mdc-text-field--fullwidth.mdc-text-field--dense
+																	input#password.mdc-text-field__input(pattern='.{3,}', type='password', autocomplete='current-password', name='password')
+																	label.mdc-floating-label(for='password') Password
+																	.mdc-line-ripple
+															.portal-card__content--column-actions
+																button.mdc-button.mdc-button--raised.mdc-button--portal-login(onclick='performLogin();') Login
+																a.mdc-button.mdc-button--portal-forgot-pwd(href='#forgot-password.html') Forgot Password?
+
+		// initialise material components js
+		script(src='/public/backend/js/plugins/material-components-web.js')
+		script.
+			mdc.autoInit()
+		// page specific JS
+		script.
+			(function () {
+				const tfRoot = document.querySelectorAll('.mdc-text-field');
+				for (let i = 0; i < tfRoot.length; i++) {
+				new mdc.textField.MDCTextField(tfRoot[i]);
+				document.getElementById("username").addEventListener("keyup", function (event) {
+					event.preventDefault();
+					if (event.keyCode === 13) {
+						performLogin();
+					}
+				});
+				document.getElementById("password").addEventListener("keyup", function (event) {
+					event.preventDefault();
+					if (event.keyCode === 13) {
+						performLogin();
+					}
+				});
+			}
+			})();
+			function performLogin(){
+				document.getElementById("auth").submit();
+			}
