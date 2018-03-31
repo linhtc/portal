@@ -86,6 +86,8 @@ router.post('/data', function (req, res) {
                     });
                     return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: index});
                 });
+            } else{
+                return res.json({status: 1, data: [], draw: 1, recordsTotal: 0, recordsFiltered: 0});
             }
         });
     }
