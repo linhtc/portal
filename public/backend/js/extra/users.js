@@ -159,14 +159,11 @@ if (_permission.edit !== undefined) {
 
 document.getElementById('iframe').onload = function() {
     let win = document.getElementById("iframe").contentWindow;
-    console.log('win postMessage');
     win.postMessage('Hello', '*');
 };
 function receiveMessage(event) {
-    console.log(event);
     if(event.data.status && event.data.file){
         _dialogFile.close();
-        // console.log(event.data.file.relPath);
         let avatarID = '#avatar';
         $(avatarID).val('/public/files'+event.data.file.relPath);
         $(avatarID).parent().find('label').addClass('mdc-floating-label--float-above');
