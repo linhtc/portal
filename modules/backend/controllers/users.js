@@ -47,7 +47,7 @@ router.post('/data', function (req, res) {
     } else{
         // console.log(req.body);
         let filter = {removed:false};
-        userModel.count(filter,function(err, count){
+        userModel.count(filter, function(err, count){
             if(!err){
                 // if(req.body.id !== undefined && req.body.id !== ''){
                 //     filter.id = req.body.id;
@@ -149,7 +149,7 @@ router.post('/save', function (req, res) {
                                 return reject(new Error(err.message));
                             }
                             return resolve(result._id);
-                        });
+                        });1
                     }).then(function(message){
                         return res.json({status: 1, message: message});
                     }).catch((err) => { return res.send(err.message) });

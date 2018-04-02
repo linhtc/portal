@@ -92,7 +92,7 @@ block content
 
                                                     .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
                                                         input#avatarFile.mdc-text-field__input(style='display:none;', type='file', accept='image/*', aria-controls='email-validation-msg')
-                                                        input#avatar.params.mdc-text-field__input(type="text", readonly='', onclick='$("#avatarFile").click();')
+                                                        input#avatar.params.mdc-text-field__input(type="text", readonly='', onclick='_dialogFile.show();')
                                                         label.mdc-floating-label(for='avatarFile') Avatar
                                                         .mdc-line-ripple
                                                     p#email-validation-msg2.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
@@ -137,6 +137,13 @@ block content
                             button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--accept-custom#saveInfo(type='button') Lưu
                     .mdc-dialog__backdrop
 
+            aside#mdc-dialog-file.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-default-label', aria-describedby='mdc-dialog-default-description')
+                .mdc-dialog__surface
+                    section#mdc-dialog-default-description.mdc-dialog__body(style='padding: 0; margin: 0;')
+                        iframe#iframe(src='http://cdn.portal.local', style='width: 100%; height: 500px; border: none;', tabindex=0)
+                .mdc-dialog__backdrop
+
+
 block specific-js
     // Data table plugin
     script(type='text/javascript', src='/public/backend/js/plugins/jquery.dataTables.min.js')
@@ -157,6 +164,7 @@ block specific-js
         _this = null;
         _buttons = [];
         _dialog = null;
+        _dialogFile = null;
         _groupMap = !{JSON.stringify(groups)};
         _groupIndex = {};
     script(type='text/javascript', src="/public/backend/js/extra/users.js")
