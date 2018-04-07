@@ -33,25 +33,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.set('trust proxy', 1);
-app.use(session({
-    secret: "fd34s@!@dfa453f3DF#$D&W",
-    name: 'mySessionName',
-    resave: true,
-    saveUninitialized: true,
-    proxy: false,
-    cookie: { secure: false, maxAge: 60 * 60 * 1000 }
-}));
+app.use(session({secret: "fd34s@!@dfa453f3DF#$D&W",name: 'mySessionName',resave: true,saveUninitialized: true,proxy: false,cookie: { secure: false, maxAge: 60 * 60 * 1000 }}));
 
 let index = require('./routes/index');
 let frontend = require('./modules/frontend/controllers/frontend');
 let backend = require('./modules/backend/controllers/backend');
 let cdn = require('./modules/backend/controllers/cdn');
 let users = require('./modules/backend/controllers/users');
+let artical = require('./modules/backend/controllers/artical');
 let guarantees = require('./modules/guarantees/controllers/active_guarantee_logs');
 
 app.use('/', index);
 app.use('/frontend', frontend);
 app.use('/backend', backend);
+app.use('/backend', artical);
 app.use('/backend/cdn', cdn);
 app.all('/backend/users', function(req, res) { res.redirect(301, '/backend/users/'); });
 app.use('/backend/users/', users);
