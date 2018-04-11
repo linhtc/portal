@@ -46,10 +46,10 @@ let guarantees = require('./modules/guarantees/controllers/active_guarantee_logs
 app.use('/', index);
 app.use('/frontend', frontend);
 app.use('/backend', backend);
-app.use('/backend', artical);
 app.use('/backend/cdn', cdn);
 app.all('/backend/users', function(req, res) { res.redirect(301, '/backend/users/'); });
 app.use('/backend/users/', users);
+app.use('/backend', artical);
 app.use('/api/v1/guarantee/', guarantees);
 
 // root folder config

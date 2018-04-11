@@ -7,10 +7,7 @@ let md5 = require('md5');
 // let redis = require("redis");
 // let client = redis.createClient();
 
-/**
- * Index
- */
-router.get('/', function (req, res) {
+router.get('/artical/view', function (req, res) {
     if (!req.session.user) {
         return res.redirect('/backend/auth?page='+req.originalUrl);
     }
@@ -21,8 +18,8 @@ router.get('/', function (req, res) {
         if(err){
             return res.json({status: 0, data: []});
         }
-        res.render('backend/users/index.pug', {
-            title: 'Người dùng',
+        res.render('backend/articals/view.pug', {
+            title: 'Bài Viết',
             user: req.session.user,
             groups: docs,
             permission: req.session.user.permission.users,
@@ -31,3 +28,5 @@ router.get('/', function (req, res) {
         return res.end();
     });
 });
+
+module.exports = router;
