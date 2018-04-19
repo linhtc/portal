@@ -1,7 +1,7 @@
 extends ../layouts/_layout.pug
 
 block variables
-    - var activePage = 'users'
+    - var activePage = 'artical'
     - var activeGroup = 'management'
 
 block content
@@ -17,12 +17,9 @@ block content
                                     th
                                     th ID
                                     th STT
-                                    th Họ tên
-                                    th Tài khoản
-                                    th Điện thoại
-                                    th Email
-                                    th Giới tính
-                                    th Địa chỉ
+                                    th Tiêu đề
+                                    th Ngày Đăng
+                                    th Trang Thái
                                     th Nhóm
                             tbody
 
@@ -31,117 +28,11 @@ block content
                                     th(abbr='checker')
                                     th(abbr='id') ID
                                     th(abbr='number') STT
-                                    th(abbr='fullname') Họ tên
-                                    th(abbr='username') Tài khoản
-                                    th(abbr='phone') Điện thoại
-                                    th(abbr='email') Email
-                                    th(abbr='gender') Giới tính
-                                    th(abbr='address') Địa chỉ
+                                    th(abbr='title') Tiêu đề
+                                    th(abbr='created') Ngày Đăng
+                                    th(abbr='public') Trang Thái
                                     th(abbr='group') Nhóm
 
-
-                input.form-control(type="file", accept='.csv', style="display:none;")#importFile
-                aside#mdc-dialog-default.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
-                    .mdc-dialog__surface
-                        header.mdc-dialog__header
-                            h2#mdc-dialog-with-list-label.mdc-dialog__header__title
-                                | Thêm/Sửa thông tin
-                        section#mdc-dialog-with-list-description.mdc-dialog__body.mdc-dialog__body--scrollable
-                            .mdc-layout-grid(style="padding: 0;")
-                                .mdc-layout-grid__inner
-                                    .mdc-layout-grid__cell--span-12-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
-                                        .mdc-layout-grid
-                                            .mdc-layout-grid__inner
-                                                .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
-                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
-                                                        input#fullname.params.mdc-text-field__input(required='', type='text', aria-controls='fullname-validation-msg')
-                                                        label.mdc-floating-label(for='fullname') Họ và tên
-                                                        .mdc-line-ripple
-                                                    p#fullname-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Điền đầy đủ họ, chữ lót và tên
-
-                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
-                                                        input#phone.params.mdc-text-field__input(required='', type='text', aria-controls='phone-validation-msg')
-                                                        label.mdc-floating-label(for='phone') Điện thoại
-                                                        .mdc-line-ripple
-                                                    p#phone-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Nhập số điện thoại di động
-
-                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
-                                                        input#email.params.mdc-text-field__input(required='', type='text', aria-controls='email-validation-msg')
-                                                        label.mdc-floating-label(for='email') Email
-                                                        .mdc-line-ripple
-                                                    p#email-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Điền hộp thư điện tử
-
-                                                    .mdc-form-field(style='margin-top:10px;')
-                                                        .mdc-radio
-                                                            input#male.params.mdc-radio__native-control(type='radio', checked='', name='gender', value='Nam')
-                                                            .mdc-radio__background
-                                                                .mdc-radio__outer-circle
-                                                                .mdc-radio__inner-circle
-                                                        label#ex0-default-radio1-label(for='male') Nam
-                                                        .mdc-radio
-                                                            input#female.params.mdc-radio__native-control(type='radio', name='gender', value='Nữ')
-                                                            .mdc-radio__background
-                                                                .mdc-radio__outer-circle
-                                                                .mdc-radio__inner-circle
-                                                        label#ex0-default-radio2-label(for='female') Nữ
-                                                    p#gender-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Chọn giới tính
-
-                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
-                                                        input#avatarFile.mdc-text-field__input(style='display:none;', type='file', accept='image/*', aria-controls='email-validation-msg')
-                                                        input#avatar.params.mdc-text-field__input(type="text", readonly='', onclick='_dialogFile.show();')
-                                                        label.mdc-floating-label(for='avatarFile') Avatar
-                                                        .mdc-line-ripple
-                                                    p#email-validation-msg2.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Tải ảnh đại diện từ máy lên
-
-                                                .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
-                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
-                                                        input#username.params.mdc-text-field__input(required='', type='text', aria-controls='username-validation-msg')
-                                                        label.mdc-floating-label(for='username') Tài khoản
-                                                        .mdc-line-ripple
-                                                    p#username-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Tài khoản để đăng nhập hệ thống
-
-                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
-                                                        input#password.params.mdc-text-field__input(required='', pattern='.{3,}', type='password', aria-controls='password-validation-msg', autocomplete='current-password')
-                                                        label.mdc-floating-label(for='password') Mật khẩu
-                                                        .mdc-line-ripple
-                                                    p#password-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
-                                                        | Tối thiểu 3 ký tự
-
-                                                    #group.params.mdc-select(role='listbox', style='width:100%;')
-                                                        .mdc-select__surface(tabindex='0')
-                                                            .mdc-select__label Nhóm
-                                                            .mdc-select__selected-text
-                                                            .mdc-select__bottom-line
-                                                        .mdc-menu.mdc-select__menu
-                                                            ul.mdc-list.mdc-menu__items
-                                                                each group in groups
-                                                                    li#group.mdc-list-item(role='option', tabindex='0', value=group.key)
-                                                                        =group.name
-                                                    p#group-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg(style='margin-top:8px;')
-                                                        | Chọn nhóm để phân quyền
-
-                                                    .mdc-text-field.mdc-text-field--textarea.mdc-text-field--fullwidth.full-width-textarea-example(style='margin-top:24px;')
-                                                        textarea#address.params.mdc-text-field__input(rows='5')
-                                                        label.mdc-floating-label(for='address') Địa chỉ
-                                                        .mdc-line-ripple
-                                                    input.form-control(type="hidden").params#_id
-                        footer.mdc-dialog__footer
-                            span#infoError.error
-                            button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Đóng
-                            button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--accept-custom#saveInfo(type='button') Lưu
-                    .mdc-dialog__backdrop
-
-            aside#mdc-dialog-file.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-default-label', aria-describedby='mdc-dialog-default-description')
-                .mdc-dialog__surface
-                    section#mdc-dialog-default-description.mdc-dialog__body(style='padding: 0; margin: 0;')
-                        iframe#iframe(src='http://cdn.portal.local', style='width: 100%; height: 500px; border: none;', tabindex=0)
-                .mdc-dialog__backdrop
 
 
 block specific-js
@@ -167,5 +58,5 @@ block specific-js
         _dialogFile = null;
         _groupMap = !{JSON.stringify(groups)};
         _groupIndex = {};
-    script(type='text/javascript', src="/public/backend/js/extra/users.js")
+    script(type='text/javascript', src="/public/backend/js/extra/artical.js")
 

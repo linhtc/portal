@@ -9,12 +9,15 @@ let articalSchema = mongoose.Schema({
     catalog: { type: Boolean, default: false },
     title: { type: String, default: "N/A" },
     slug: { type: String, default: "N/A" },
+    thumbnail: { type: String, default: "N/A" },
     summary: { type: String, default: "N/A" },
     content: { type: String, default: "N/A" },
     seo: { type: String, default: "N/A" },
-    group: { type: Boolean, default: false }
+    public: { type: String, default: 1 },
+    group: { type: String, default: 1 },
+    removed: { type: Boolean, default: false }
 });
 
-let articalrModel = mongoose.model('artical', articalSchema);
+let articalModel = mongoose.model('articals', articalSchema);
 
-module.exports = articalrModel;
+module.exports = articalModel;

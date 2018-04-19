@@ -1,0 +1,111 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'artical'
+    - var activeGroup = 'management'
+block content
+    .portal-main__content.mdc-theme--background.mdc-theme--text-primary-on-background
+        .mdc-layout-grid
+            .mdc-layout-grid__inner
+                .portal-widget.mdc-layout-grid__cell--span-12-desktop.mdc-layout-grid__cell--span-12-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Sửa bài viết mới
+                    .mdc-card.mdc-card--portal-fullheight
+                        .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                            .portal-card__content.mdc-typography--body1
+                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                    input#title.params.mdc-text-field__input(
+                                        required='',
+                                        type='text',
+                                        aria-controls='fullname-validation-msg',
+                                        value=data.title
+                                    )
+                                    label.mdc-floating-label(for='fullname') Tiêu đề
+                                    .mdc-line-ripple
+                                p#fullname-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                    | Nhập tiêu đề bài viết
+
+                                .mdc-form-field(style='margin-top:10px;')
+                                    .mdc-radio
+                                        input#public.params.mdc-radio__native-control(
+                                            type='radio',
+                                            checked=data.public==1?'checked':'',
+                                            name='public',
+                                            value='1'
+                                        )
+                                        .mdc-radio__background
+                                            .mdc-radio__outer-circle
+                                            .mdc-radio__inner-circle
+                                    label#ex0-default-radio1-label(for='male') Public
+                                    .mdc-radio
+                                        input#drafts.params.mdc-radio__native-control(
+                                            type='radio',
+                                            checked=data.public==0?'checked':'',
+                                            name='public',
+                                            value='0'
+                                        )
+                                        .mdc-radio__background
+                                            .mdc-radio__outer-circle
+                                            .mdc-radio__inner-circle
+                                    label#ex0-default-radio2-label(for='female') Drafts
+                                p#gender-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                    | Chọn trạng thái bài viết
+
+                                .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                    input#avatarFile.mdc-text-field__input(style='display:none;', type='file', accept='image/*', aria-controls='email-validation-msg', value=data.thumbnail)
+                                    input#thumbnail.params.mdc-text-field__input(type="text", readonly='', onclick='_dialogFile.show();',value=data.thumbnail)
+                                    label.mdc-floating-label(for='avatarFile') Thumbnail
+                                    .mdc-line-ripple
+                                p#email-validation-msg2.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                    | Tải ảnh đại diện từ máy lên
+
+                                #group.params.mdc-select(role='listbox', style='width:100%;')
+                                    .mdc-select__surface(tabindex='0')
+                                        .mdc-select__label.mdc-select__label--float-above Nhóm
+                                        .mdc-select__selected-text Photo
+                                        .mdc-select__bottom-line
+                                    .mdc-menu.mdc-select__menu
+                                        ul.mdc-list.mdc-menu__items
+                                            li#group.mdc-list-item(role='option', selected='selected', tabindex='0', value=1) Artical
+                                            li#group.mdc-list-item(role='option', tabindex='0', value=2) Photo
+                                            li#group.mdc-list-item(role='option', tabindex='0', value=3) Video
+                                p#group-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg(style='margin-top:8px;')
+                                    | Chọn nhóm bài viết
+
+                                .full-width-textarea-example(style='margin-top:24px;')
+                                    textarea#content.params.mdc-text-field__input.tinymce_full(rows='5', name='content') #{data.content}
+                                input.form-control.params#_id(type="hidden", name="_id", value=data._id)
+
+                            .mdc-card__actions.portal-card__actions
+                                .mdc-card__action-buttons
+                                    span#infoError.error
+                                    button.mdc-button.mdc-button--raised.mdc-button--dense.pull-right#saveInfo(type='button') Lưu
+
+
+                input.form-control(type="file", accept='.csv', style="display:none;")#importFile
+
+
+
+            aside#mdc-dialog-file.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-default-label', aria-describedby='mdc-dialog-default-description')
+                .mdc-dialog__surface
+                    section#mdc-dialog-default-description.mdc-dialog__body(style='padding: 0; margin: 0;')
+                        iframe#iframe(src='http://localhost:8080', style='width: 100%; height: 500px; border: none;', tabindex=0)
+                .mdc-dialog__backdrop
+
+
+block specific-js
+    // Data table plugin
+    script(type='text/javascript', src='/public/backend/js/plugins/notify.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/sweet.alert.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.blockUI.js')
+    //script(type='text/javascript', src="/public/backend/js/plugins/select2.min.js")
+    script(type='text/javascript').
+        _thatUrl = '#{url}';
+        _permission = !{JSON.stringify(permission)};
+        _this = null;
+        _buttons = [];
+        _dialog = null;
+        _dialogFile = null;
+        _groupMap = !{JSON.stringify(groups)};
+        _groupIndex = {};
+    script(type='text/javascript', src="/public/backend/js/extra/artical.js")
+
