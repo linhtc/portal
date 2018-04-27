@@ -1,10 +1,3 @@
-try{
-    for(let gIndex=0; gIndex<_groupMap.length; gIndex++){
-        _groupIndex[_groupMap[gIndex].key] = gIndex;
-    }
-} catch (exx){
-    console.log(exx.message);
-}
 let selectBag = {};
 if(_permission.export !== undefined){
     _buttons.push({
@@ -80,6 +73,7 @@ if (_permission.remove !== undefined) {
                                 dataType: 'json',
                                 success: function (result) {
                                     if (result.status === 1) {
+                                        _infoTable.clearPipeline();
                                         _infoTable.ajax.reload();
                                         swal("Deleted!", "Dữ liệu đã được xóa!", "success");
                                     } else {
@@ -125,17 +119,17 @@ if (_permission.edit !== undefined) {
                                         } else {
                                             $("#female").prop("checked", true);
                                         }
-                                    } else if(key === 'group') {
-                                        if(_groupIndex[item[key]] !== undefined){
-                                            selectBag[key].selectedIndex = _groupIndex[item[key]]
-                                        }
                                     } else {
                                         let keyID = '#' + key;
-                                        $(keyID).val(item[key]);
-                                        $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
+                                        if ($(keyID).attr('role') === 'listbox') {
+                                            $(keyID + '-' + item[key]).click();
+                                        } else {
+                                            $(keyID).val(item[key]);
+                                            $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
+                                        }
                                     }
                                 });
-                                $("#avatarFile").val('');
+                                $("#avatar").val('');
                                 $('#password').attr('required', false);
                                 $('#username').attr('readonly', true);
                                 $('#infoModalTitle').text('Sửa lại');
@@ -212,6 +206,7 @@ $('#saveInfo').click(function () {
             dataType: 'json',
             success: function (result) {
                 if (result.status === 1) {
+                    _infoTable.clearPipeline();
                     _infoTable.ajax.reload();
                     $('#saveInfo').notify(result.message, {className: 'success', position: 'right top'});
                     _dialog.close();
@@ -276,6 +271,7 @@ $("#importFile").change(function (e) {
         success: function (result) {
             $(_this).unblock();
             if(result.status === 1){
+                _infoTable.clearPipeline();
                 _infoTable.ajax.reload();
                 $.notify({
                     title: "Thành công: ",
@@ -383,6 +379,13 @@ $(document).ready(function () {
                 });
                 $('.table').wrapAll('<div class="table-responsive"></div>');
             }, 10);
+        },
+        drawCallback: function(settings){
+            $("#infoTable tr").each(function(){
+                $(this).find("td:eq(5)").on('click', function(){
+                    console.log(_infoTable.cell(this).data());
+                });
+            });
         },
         columnDefs: [{
             orderable: false,

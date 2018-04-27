@@ -121,7 +121,7 @@ block content
                                                         .mdc-menu.mdc-select__menu
                                                             ul.mdc-list.mdc-menu__items
                                                                 each group in groups
-                                                                    li#group.mdc-list-item(role='option', tabindex='0', value=group.key)
+                                                                    li.mdc-list-item(id='group-'+group.key, role='option', tabindex='0', value=group.key)
                                                                         =group.name
                                                     p#group-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg(style='margin-top:8px;')
                                                         | Chọn nhóm để phân quyền
@@ -165,7 +165,5 @@ block specific-js
         _buttons = [];
         _dialog = null;
         _dialogFile = null;
-        _groupMap = !{JSON.stringify(groups)};
-        _groupIndex = {};
     script(type='text/javascript', src="/public/backend/js/extra/users.js")
 
