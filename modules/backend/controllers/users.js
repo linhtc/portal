@@ -73,18 +73,41 @@ router.post('/data', function (req, res) {
                 if(req.body.group !== undefined && req.body.group !== ''){
                     filter.group = {$regex: req.body.group, $options: 'i'};
                 }
-                userModel.find(filter, '_id fullname username phone email gender address group', {sort: {_id: 'asc'}}, function (err, docs) {
+                userModel.count(filter, function (err, filtered) {
                     if(err){
                         return res.json({status: 0, data: []});
                     }
-                    let set = [];
-                    let index = 0;
-                    docs.forEach(function (item) {
-                        set.push([null, item._id, ++index, item.fullname, item.username, item.phone,
-                            item.email, item.gender, item.address, item.group
-                        ]);
+                    let query = userModel.find(filter, '_id fullname username phone email gender address group')
+                        .sort({_id: 'asc'})
+                        .skip(parseInt(req.body.start)).limit(parseInt(req.body.length))
+                    ;
+                    query.exec(function (err, docs) {
+                        if(err){
+                            console.log(err);
+                            return res.json({status: 0, data: []});
+                        }
+                        let set = [];
+                        let index = 0;
+                        docs.forEach(function (item) {
+                            set.push([null, item._id, ++index, item.fullname, item.username, item.phone,
+                                item.email, item.gender, item.address, item.group
+                            ]);
+                        });
+                        return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: filtered});
                     });
-                    return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: index});
+                    // userModel.find(filter, '_id fullname username phone email gender address group', {sort: {_id: 'asc'}}, function (err, docs) {
+                    //     if(err){
+                    //         return res.json({status: 0, data: []});
+                    //     }
+                    //     let set = [];
+                    //     let index = 0;
+                    //     docs.forEach(function (item) {
+                    //         set.push([null, item._id, ++index, item.fullname, item.username, item.phone,
+                    //             item.email, item.gender, item.address, item.group
+                    //         ]);
+                    //     });
+                    //     return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: index});
+                    // });
                 });
             } else{
                 return res.json({status: 1, data: [], draw: 1, recordsTotal: 0, recordsFiltered: 0});

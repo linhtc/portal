@@ -339,10 +339,11 @@ $(document).ready(function () {
         //     type: 'POST',
         //     data: {}
         // },
+        pageLength: 5,
         ajax: $.fn.dataTable.pipeline({
             url: _thatUrl+'data',
-            pages: 5, // number of pages to cache,
-            data: {test: 123}
+            pages: 1, // number of pages to cache,
+            data: {debug: false}
         }),
         fnInitComplete: function (oSettings) {
             setTimeout(function () {
@@ -362,12 +363,14 @@ $(document).ready(function () {
                     $(this).html(element);
                 });
                 _infoTable.columns().every(function (index) {
-                    let that = this;
+                    // let that = this;
                     $('input', this.footer()).val('');
                     $('input', this.footer()).on('keyup', function (e) {
                         if(e.keyCode === 13){
                             if(_infoTable !== null){
-                                _infoTable.clearPipeline().draw();
+                                // _infoTable.clearPipeline().draw();
+                                _infoTable.clearPipeline();
+                                _infoTable.ajax.reload();
                             }
                         }
                         // let tmpID = $(this).attr('id');
