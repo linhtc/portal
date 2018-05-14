@@ -113,19 +113,18 @@ if (_permission.edit !== undefined) {
                             if (result.status === 1) {
                                 let item = result.item;
                                 Object.keys(item).forEach(function (key) {
-                                    if (key === 'gender') {
-                                        if (item[key] === 'Nam') {
-                                            $("#male").prop("checked", true);
-                                        } else {
-                                            $("#female").prop("checked", true);
-                                        }
+                                    let keyID = '#' + key;
+                                    if ($(keyID).attr('role') === 'listbox') { /* select tag */
+                                        $(keyID + '-' + item[key]).click();
+                                    } else if($(keyID).attr('type') === 'text' || $(keyID).attr('type') === 'hidden'){ /* input tag */
+                                        $(keyID).val(item[key]);
+                                        $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
                                     } else {
-                                        let keyID = '#' + key;
-                                        if ($(keyID).attr('role') === 'listbox') {
-                                            $(keyID + '-' + item[key]).click();
-                                        } else {
+                                        let element = $("[value='"+item[key]+"']");
+                                        if(element.attr('type') === 'radio'){ /* radio tag */
+                                            element.prop('checked', true);
+                                        } else{ /* undefined */
                                             $(keyID).val(item[key]);
-                                            $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
                                         }
                                     }
                                 });

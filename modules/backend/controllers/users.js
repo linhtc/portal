@@ -73,41 +73,40 @@ router.post('/data', function (req, res) {
                 if(req.body.group !== undefined && req.body.group !== ''){
                     filter.group = {$regex: req.body.group, $options: 'i'};
                 }
+
                 userModel.count(filter, function (err, filtered) {
                     if(err){
                         return res.json({status: 0, data: []});
                     }
-                    let query = userModel.find(filter, '_id fullname username phone email gender address group')
-                        .sort({_id: 'asc'})
-                        .skip(parseInt(req.body.start)).limit(parseInt(req.body.length))
-                    ;
-                    query.exec(function (err, docs) {
-                        if(err){
-                            console.log(err);
-                            return res.json({status: 0, data: []});
-                        }
-                        let set = [];
-                        let index = 0;
-                        docs.forEach(function (item) {
-                            set.push([null, item._id, ++index, item.fullname, item.username, item.phone,
-                                item.email, item.gender, item.address, item.group
-                            ]);
+                    try{
+                        let maps = ['_id', '_id', '_id', 'fullname', 'username', 'phone', 'email', 'gender', 'address', 'group'];
+                        let order = parseInt(req.body['order[0][column]']);
+                        let dir = req.body['order[0][dir]'];
+                        let sort = {};
+                        sort[maps[order] !== undefined ? maps[order] : _id] = dir;
+                        let start = parseInt(req.body.start);
+                        let length = parseInt(req.body.length);
+                        let query = userModel.find(filter, '_id fullname username phone email gender address group')
+                            .sort(sort)
+                            .skip(start).limit(length)
+                        ;
+                        query.exec(function (err, docs) {
+                            if(err){
+                                return res.json({status: 0, data: []});
+                            }
+                            let set = [];
+                            let index =  dir === 'desc' ? (start === 0 ? filtered + 1 : filtered - start + 1) : start;
+                            docs.forEach(function (item) {
+                                index +=  dir === 'desc' ? -1 : 1;
+                                set.push([null, item._id, index, item.fullname, item.username, item.phone,
+                                    item.email, item.gender, item.address, item.group
+                                ]);
+                            });
+                            return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: filtered});
                         });
-                        return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: filtered});
-                    });
-                    // userModel.find(filter, '_id fullname username phone email gender address group', {sort: {_id: 'asc'}}, function (err, docs) {
-                    //     if(err){
-                    //         return res.json({status: 0, data: []});
-                    //     }
-                    //     let set = [];
-                    //     let index = 0;
-                    //     docs.forEach(function (item) {
-                    //         set.push([null, item._id, ++index, item.fullname, item.username, item.phone,
-                    //             item.email, item.gender, item.address, item.group
-                    //         ]);
-                    //     });
-                    //     return res.json({status: 1, data: set, draw: req.body.draw, recordsTotal: count, recordsFiltered: index});
-                    // });
+                    } catch (e) {
+                        return res.json({status: 0, data: []});
+                    }
                 });
             } else{
                 return res.json({status: 1, data: [], draw: 1, recordsTotal: 0, recordsFiltered: 0});
