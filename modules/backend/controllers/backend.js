@@ -28,7 +28,7 @@ router.get('/auth', function (req, res, next) {
     req.session.destroy();
     let page = req.query.page;
     if(page === undefined){
-        page = '/backend';
+        page = '/backend/products/';
     }
     res.render('backend/auth.pug', {
         title: 'Auth page',
@@ -72,6 +72,15 @@ router.get('/request-access', function (req, res, next) {
     res.render('backend/request.pug', {
         title: 'Permission denied',
         page: page
+    });
+});
+
+/**
+ * Index
+ */
+router.get('/filemanager', function (req, res) {
+    res.render('backend/includes/_filemanager.ejs', {
+        title: 'Dashboard'
     });
 });
 

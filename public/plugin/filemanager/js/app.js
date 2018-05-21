@@ -63,7 +63,7 @@ FMApp.controller('FileManagerCtr', ['$scope', '$http', '$location',
     };
 
     var setCurFiles = function (relPath) {
-      $http.get('api' + relPath)
+      $http.get('/backend/api' + relPath)
         .success(function (data) {
           var files = data;
           files.forEach(function (file) {

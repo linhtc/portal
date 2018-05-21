@@ -171,7 +171,7 @@ router.post('/save', function (req, res) {
                                 return reject(new Error(err.message));
                             }
                             return resolve(result._id);
-                        });1
+                        });
                     }).then(function(message){
                         return res.json({status: 1, message: message});
                     }).catch((err) => { return res.send(err.message) });

@@ -23,7 +23,7 @@ let app = express();
 app.enable('strict routing');
 app.set('views', path.join(__dirname, 'views'));
 app.engine('pug', cons.pug);
-// app.engine('ejs', cons.ejs);
+app.engine('ejs', cons.ejs);
 app.set('view engine', 'pug');
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public', express.static(path.join(__dirname, 'public'))); // dang co van de voi nginx cua server
@@ -35,13 +35,17 @@ app.use(cookieParser());
 app.set('trust proxy', 1);
 app.use(session({secret: "fd34s@!@dfa453f3DF#$D&W",name: 'mySessionName',resave: true,saveUninitialized: true,proxy: false,cookie: { secure: false, maxAge: 60 * 60 * 1000 }}));
 
+// var fileManager = require('express-file-manager');
+
 let index = require('./routes/index');
 let frontend = require('./modules/frontend/controllers/frontend');
 let backend = require('./modules/backend/controllers/backend');
 let cdn = require('./modules/backend/controllers/cdn');
 let users = require('./modules/backend/controllers/users');
+let products = require('./modules/backend/controllers/products');
 let artical = require('./modules/backend/controllers/artical');
 let guarantees = require('./modules/guarantees/controllers/active_guarantee_logs');
+let api = require('./modules/backend/controllers/api');
 
 app.use('/', index);
 app.use('/frontend', frontend);
@@ -49,11 +53,16 @@ app.use('/backend', backend);
 app.use('/backend/cdn', cdn);
 app.all('/backend/users', function(req, res) { res.redirect(301, '/backend/users/'); });
 app.use('/backend/users/', users);
+app.all('/backend/products', function(req, res) { res.redirect(301, '/backend/products/'); });
+app.use('/backend/products/', products);
 app.use('/backend', artical);
+app.use('/backend/api', api);
 app.use('/api/v1/guarantee/', guarantees);
+// app.use('/filemanager', fileManager(path.join(__dirname, 'public'), {}));
 
 // root folder config
 global.__base = __dirname + '/';
+global.__fileManager = __dirname + '/public/files';
 
 // load libs
 global.vietnamProvince = require('./libs/vietnamProvince');

@@ -53,21 +53,21 @@
 							span.portal-navigation-list__text
 								i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') date_range
 								|             Calendar
-					a.portal-navigation-list__item.mdc-list-item(href='colors.html')
+					a.portal-navigation-list__item.mdc-list-item(href='#')
 						span.portal-navigation-list__text
 							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') palette
 							|         Đơn hàng
 				h3.mdc-list-group__subheader.portal-navigation__subheader DANH MỤC
 				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
-					a.portal-navigation-list__item.mdc-list-item(href='typography.html')
+					a.portal-navigation-list__item.mdc-list-item(href='/backend/products/', class={'mdc-list-item--activated': activePage === 'products'})
 						span.portal-navigation-list__text
 							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') text_format
 							|           Sản phẩm
-					a.portal-navigation-list__item.mdc-list-item(href='colors.html')
+					a.portal-navigation-list__item.mdc-list-item(href='#')
 						span.portal-navigation-list__text
 							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') palette
 							|           Khách hàng
-				h3.mdc-list-group__subheader.portal-navigation__subheader Artical
+				h3.mdc-list-group__subheader.portal-navigation__subheader ARTICLE
 				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
 					a.portal-navigation-list__item.mdc-list-item(href='backend/artical-catalog/view')
 						span.portal-navigation-list__text
@@ -76,98 +76,109 @@
 					a.portal-navigation-list__item.mdc-list-item(href='backend/artical/view', class={'mdc-list-item--activated': activePage === 'artical'})
 						span.portal-navigation-list__text
 							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') palette
-							|           Artical
-				h3.mdc-list-group__subheader.portal-navigation__subheader PAGES
+							|           Article
+				h3.mdc-list-group__subheader.portal-navigation__subheader CÁ NHÂN
 				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
-					a.mdc-list-item.portal-navigation-list__item(href='#')
+					a.portal-navigation-list__item.mdc-list-item(href='#')
 						span.portal-navigation-list__text
-							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon perm_identity
-							|         Authentication
-						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
-					nav.mdc-list.portal-navigation-list
-						a.portal-navigation-list__item.mdc-list-item(href='login.html')
-							span.portal-navigation-list__text
-								| Login
-						a.portal-navigation-list__item.mdc-list-item(href='register.html')
-							span.portal-navigation-list__text
-								| Register
-						a.portal-navigation-list__item.mdc-list-item(href='forgot-password.html')
-							span.portal-navigation-list__text
-								| Forgot Password
-						a.portal-navigation-list__item.mdc-list-item(href='lock.html')
-							span.portal-navigation-list__text
-								| Lock
-					a.mdc-list-item.portal-navigation-list__item(href='#')
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') accessibility
+							|           Profile
+					a.portal-navigation-list__item.mdc-list-item(href='backend/auth', class={'mdc-list-item--activated': activePage === 'artical'})
 						span.portal-navigation-list__text
-							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon error
-							|         Errors
-						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
-					nav.mdc-list.portal-navigation-list
-						a.portal-navigation-list__item.mdc-list-item(href='404.html')
-							span.portal-navigation-list__text
-								| 404
-						a.portal-navigation-list__item.mdc-list-item(href='500.html')
-							span.portal-navigation-list__text
-								| 500
-				h3.mdc-list-group__subheader.portal-navigation__subheader ELEMENTS
-				nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
-					a.mdc-list-item.portal-navigation-list__item(href='#')
-						span.portal-navigation-list__text
-							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon extension
-							|         Form Controls
-						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
-					nav.mdc-list.portal-navigation-list
-						a.portal-navigation-list__item.mdc-list-item(href='checkbox.html')
-							span.portal-navigation-list__text
-								| Checkbox
-						a.portal-navigation-list__item.mdc-list-item(href='input.html')
-							span.portal-navigation-list__text
-								| Input
-						a.portal-navigation-list__item.mdc-list-item(href='radio.html')
-							span.portal-navigation-list__text
-								| Radio
-						a.portal-navigation-list__item.mdc-list-item(href='select.html')
-							span.portal-navigation-list__text
-								| Select
-						a.portal-navigation-list__item.mdc-list-item(href='slider.html')
-							span.portal-navigation-list__text
-								| Slider
-					a.mdc-list-item.portal-navigation-list__item(href='#')
-						span.portal-navigation-list__text
-							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon view_module
-							|         Layout
-						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
-					nav.mdc-list.portal-navigation-list
-						a.portal-navigation-list__item.mdc-list-item(href='cards.html')
-							span.portal-navigation-list__text
-								| Cards
-						a.portal-navigation-list__item.mdc-list-item(href='tabs.html')
-							span.portal-navigation-list__text
-								| Tabs
-					a.mdc-list-item.portal-navigation-list__item(href='#')
-						span.portal-navigation-list__text
-							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon error
-							|         Buttons & Indicators
-						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
-					nav.mdc-list.portal-navigation-list
-						a.portal-navigation-list__item.mdc-list-item(href='buttons.html')
-							span.portal-navigation-list__text
-								| Buttons
-						a.portal-navigation-list__item.mdc-list-item(href='progress.html')
-							span.portal-navigation-list__text
-								| Linear Progress
-					a.mdc-list-item.portal-navigation-list__item(href='#')
-						span.portal-navigation-list__text
-							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon feedback
-							|         Popups & Modals
-						i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
-					nav.mdc-list.portal-navigation-list
-						a.portal-navigation-list__item.mdc-list-item(href='dialog.html')
-							span.portal-navigation-list__text
-								| Dialog
-						a.portal-navigation-list__item.mdc-list-item(href='snackbar.html')
-							span.portal-navigation-list__text
-								| Snackbar
+							i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon(aria-hidden='true') call_received
+							|           Đăng xuất
+				//
+				//h3.mdc-list-group__subheader.portal-navigation__subheader PAGES
+				//nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
+				//	a.mdc-list-item.portal-navigation-list__item(href='#')
+				//		span.portal-navigation-list__text
+				//			i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon perm_identity
+				//			|         Authentication
+				//		i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+				//	nav.mdc-list.portal-navigation-list
+				//		a.portal-navigation-list__item.mdc-list-item(href='login.html')
+				//			span.portal-navigation-list__text
+				//				| Login
+				//		a.portal-navigation-list__item.mdc-list-item(href='register.html')
+				//			span.portal-navigation-list__text
+				//				| Register
+				//		a.portal-navigation-list__item.mdc-list-item(href='forgot-password.html')
+				//			span.portal-navigation-list__text
+				//				| Forgot Password
+				//		a.portal-navigation-list__item.mdc-list-item(href='lock.html')
+				//			span.portal-navigation-list__text
+				//				| Lock
+				//	a.mdc-list-item.portal-navigation-list__item(href='#')
+				//		span.portal-navigation-list__text
+				//			i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon error
+				//			|         Errors
+				//		i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+				//	nav.mdc-list.portal-navigation-list
+				//		a.portal-navigation-list__item.mdc-list-item(href='404.html')
+				//			span.portal-navigation-list__text
+				//				| 404
+				//		a.portal-navigation-list__item.mdc-list-item(href='500.html')
+				//			span.portal-navigation-list__text
+				//				| 500
+				//h3.mdc-list-group__subheader.portal-navigation__subheader ELEMENTS
+				//nav.mdc-list.mdc-list--avatar-list.portal-navigation-list
+				//	a.mdc-list-item.portal-navigation-list__item(href='#')
+				//		span.portal-navigation-list__text
+				//			i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon extension
+				//			|         Form Controls
+				//		i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+				//	nav.mdc-list.portal-navigation-list
+				//		a.portal-navigation-list__item.mdc-list-item(href='checkbox.html')
+				//			span.portal-navigation-list__text
+				//				| Checkbox
+				//		a.portal-navigation-list__item.mdc-list-item(href='input.html')
+				//			span.portal-navigation-list__text
+				//				| Input
+				//		a.portal-navigation-list__item.mdc-list-item(href='radio.html')
+				//			span.portal-navigation-list__text
+				//				| Radio
+				//		a.portal-navigation-list__item.mdc-list-item(href='select.html')
+				//			span.portal-navigation-list__text
+				//				| Select
+				//		a.portal-navigation-list__item.mdc-list-item(href='slider.html')
+				//			span.portal-navigation-list__text
+				//				| Slider
+				//	a.mdc-list-item.portal-navigation-list__item(href='#')
+				//		span.portal-navigation-list__text
+				//			i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon view_module
+				//			|         Layout
+				//		i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+				//	nav.mdc-list.portal-navigation-list
+				//		a.portal-navigation-list__item.mdc-list-item(href='cards.html')
+				//			span.portal-navigation-list__text
+				//				| Cards
+				//		a.portal-navigation-list__item.mdc-list-item(href='tabs.html')
+				//			span.portal-navigation-list__text
+				//				| Tabs
+				//	a.mdc-list-item.portal-navigation-list__item(href='#')
+				//		span.portal-navigation-list__text
+				//			i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon error
+				//			|         Buttons & Indicators
+				//		i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+				//	nav.mdc-list.portal-navigation-list
+				//		a.portal-navigation-list__item.mdc-list-item(href='buttons.html')
+				//			span.portal-navigation-list__text
+				//				| Buttons
+				//		a.portal-navigation-list__item.mdc-list-item(href='progress.html')
+				//			span.portal-navigation-list__text
+				//				| Linear Progress
+				//	a.mdc-list-item.portal-navigation-list__item(href='#')
+				//		span.portal-navigation-list__text
+				//			i.material-icons.mdc-list-item__graphic.portal-navigation-list__icon feedback
+				//			|         Popups & Modals
+				//		i.material-icons.portal-navigation-list__icon-collapse keyboard_arrow_down
+				//	nav.mdc-list.portal-navigation-list
+				//		a.portal-navigation-list__item.mdc-list-item(href='dialog.html')
+				//			span.portal-navigation-list__text
+				//				| Dialog
+				//		a.portal-navigation-list__item.mdc-list-item(href='snackbar.html')
+				//			span.portal-navigation-list__text
+				//				| Snackbar
 			footer.mdc-toolbar.mdc-theme--text-primary-on-primary-dark.mdc-theme--primary-dark-bg.mdc-toolbar--portal-no-shrink
 				.mdc-toolbar__row
 					section.mdc-toolbar__section.mdc-toolbar__section--align-end

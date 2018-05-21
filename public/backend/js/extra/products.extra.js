@@ -30,7 +30,7 @@ if (_permission.create !== undefined) {
         text: 'Tạo',
         action: function (e, dt, node, config) {
             $('.params:input:not([type=radio])').val('');
-            $("#avatarFile").val('');
+            $("#iconFile").val('');
             $('#username').attr('readonly', false);
             $('#password').attr('required', true);
             $('#infoModalTitle').text('Thêm mới');
@@ -116,11 +116,13 @@ if (_permission.edit !== undefined) {
                                     let keyID = '#' + key;
                                     if ($(keyID).attr('role') === 'listbox') { /* select tag */
                                         $(keyID + '-' + item[key]).click();
-                                    } else if($(keyID).attr('type') === 'text' || $(keyID).attr('type') === 'hidden'){ /* input tag */
-                                        $(keyID).val(item[key]);
-                                        $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
+                                    } else if($(keyID).attr('type') === 'text' || $(keyID).attr('type') === 'number'){ /* input tag */
+                                        setTimeout(function(){
+                                            $(keyID).val(item[key]);
+                                            $(keyID).parent().find('label').addClass('mdc-floating-label--float-above');
+                                        }, 10);
                                     } else {
-                                        let element = $("[value='"+item[key]+"']");
+                                        let element = $("[name='"+key+"'][value='"+item[key]+"']");
                                         if(element.attr('type') === 'radio'){ /* radio tag */
                                             element.prop('checked', true);
                                         } else{ /* undefined */
@@ -128,7 +130,7 @@ if (_permission.edit !== undefined) {
                                         }
                                     }
                                 });
-                                $("#avatar").val('');
+                                $("#icon").val('');
                                 $('#password').attr('required', false);
                                 $('#username').attr('readonly', true);
                                 $('#infoModalTitle').text('Sửa lại');
@@ -150,16 +152,12 @@ if (_permission.edit !== undefined) {
     });
 }
 
-// document.getElementById('iframe').onload = function() {
-//     let win = document.getElementById("iframe").contentWindow;
-//     win.postMessage('Hello', '*');
-// };
 function receiveMessage(event) {
     if(event.data.status && event.data.file){
         _dialogFile.close();
-        let avatarID = '#avatar';
-        $(avatarID).val('/public/files'+event.data.file.relPath);
-        $(avatarID).parent().find('label').addClass('mdc-floating-label--float-above');
+        let iconID = '#icon';
+        $(iconID).val('/public/files'+event.data.file.relPath);
+        $(iconID).parent().find('label').addClass('mdc-floating-label--float-above');
     }
 }
 window.addEventListener("message", receiveMessage, false);
@@ -221,31 +219,31 @@ $('#saveInfo').click(function () {
         });
     }
 });
-$("#avatarFile").change(function (e) {
-    files = e.target.files;
+$("#iconFile").change(function (e) {
+    let files = e.target.files;
     let formData = new FormData();
     for (let i = 0; i < files.length; i++) {
         let file = files[i];
         formData.append('file', file, file.name);
     }
-    let avatarID = '#avatar';
+    let iconID = '#icon';
     $.ajax({
         url: '/backend/cdn/single',
         type: 'post',
         data: formData,
         success: function (result) {
             if(result.status === 1){
-                $(avatarID).val(result.path);
-                $(avatarID).parent().find('label').addClass('mdc-floating-label--float-above');
+                $(iconID).val(result.path);
+                $(iconID).parent().find('label').addClass('mdc-floating-label--float-above');
             } else{
-                $(avatarID).val('');
-                $(avatarID).parent().find('label').removeClass('mdc-floating-label--float-above');
+                $(iconID).val('');
+                $(iconID).parent().find('label').removeClass('mdc-floating-label--float-above');
             }
         },
         error: function (err) {
             console.log(err);
-            $('#avatar').val('');
-            $(avatarID).parent().find('label').removeClass('mdc-floating-label--float-above');
+            $('#icon').val('');
+            $(iconID).parent().find('label').removeClass('mdc-floating-label--float-above');
         },
         cache: false,
         contentType: false,

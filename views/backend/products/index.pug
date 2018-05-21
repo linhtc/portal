@@ -1,0 +1,149 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'products'
+    - var activeGroup = 'management'
+
+block content
+    .portal-main__content.mdc-theme--background.mdc-theme--text-primary-on-background
+        .mdc-layout-grid
+            .mdc-layout-grid__inner
+                .portal-widget.mdc-layout-grid__cell--span-12-desktop.mdc-layout-grid__cell--span-12-tablet.mdc-layout-grid__cell--span-4-phone
+                    p.portal-widget__heading.mdc-typography--subheading2 Quản lý Sản phẩm
+                    .mdc-card.mdc-card--portal-fullheight
+                        table.mdl-data-table.table#infoTable
+                            thead
+                                tr
+                                    th
+                                    th ID
+                                    th STT
+                                    th Sản phẩm
+                                    th Loại
+                                    th Giá
+                                    th Số lượng
+                                    th Trạng thái
+                                    th Ngày cập nhật
+                            tbody
+
+                            tfoot
+                                tr
+                                    th(abbr='checker')
+                                    th(abbr='id') ID
+                                    th(abbr='number') STT
+                                    th(abbr='name') Sản phẩm
+                                    th(abbr='kind') Loại
+                                    th(abbr='price') Giá
+                                    th(abbr='quantity') Số lượng
+                                    th(abbr='status') Trạng thái
+                                    th(abbr='modified') Ngày cập nhật
+
+
+                input.form-control(type="file", accept='.csv', style="display:none;")#importFile
+                aside#mdc-dialog-default.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
+                    .mdc-dialog__surface
+                        header.mdc-dialog__header
+                            h2#mdc-dialog-with-list-label.mdc-dialog__header__title
+                                | Thêm/Sửa thông tin
+                        section#mdc-dialog-with-list-description.mdc-dialog__body.mdc-dialog__body--scrollable
+                            .mdc-layout-grid(style="padding: 0;")
+                                .mdc-layout-grid__inner
+                                    .mdc-layout-grid__cell--span-12-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                                        .mdc-layout-grid
+                                            .mdc-layout-grid__inner
+                                                .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                        input#name.params.mdc-text-field__input(required='', type='text', aria-controls='name-validation-msg')
+                                                        label.mdc-floating-label(for='name') Sản phẩm
+                                                        .mdc-line-ripple
+                                                    p#name-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                        | Tên của máy này là gì?
+
+                                                    #kind.params.mdc-select(role='listbox', style='width:100%;')
+                                                        .mdc-select__surface(tabindex='0')
+                                                            .mdc-select__label Loại
+                                                            .mdc-select__selected-text
+                                                            .mdc-select__bottom-line
+                                                        .mdc-menu.mdc-select__menu
+                                                            ul.mdc-list.mdc-menu__items
+                                                                each kind in kinds
+                                                                    li.mdc-list-item(id='kind-' + kind.kind, role='option', tabindex='0', value=kind.kind)
+                                                                        =kind.name
+                                                    p#kind-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg(style='margin-top:8px;')
+                                                        | Sản phẩm này thuộc loại nào?
+
+                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                        input#iconFile.mdc-text-field__input(style='display:none;', type='file', accept='image/*', aria-controls='email-validation-msg')
+                                                        input#icon.params.mdc-text-field__input(type="text", readonly='', onclick='_dialogFile.show();')
+                                                        label.mdc-floating-label(for='iconFile') Ảnh
+                                                        .mdc-line-ripple
+                                                    p#email-validation-msg2.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                        | Chọn ảnh sản phẩm từ thư viện
+
+                                                .mdc-layout-grid__cell--span-6-desktop.mdc-layout-grid__cell--span-8-tablet.mdc-layout-grid__cell--span-4-phone
+                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                        input#price.params.mdc-text-field__input(type='number', aria-controls='price-validation-msg')
+                                                        label.mdc-floating-label(for='price') Giá
+                                                        .mdc-line-ripple
+                                                    p#price-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                        | Giá của sản phẩm này là bao nhiêu?
+
+                                                    .mdc-text-field.mdc-text-field--fullwidth.portal-text-field--fullwidth
+                                                        input#quantity.params.mdc-text-field__input(type='number', aria-controls='quantity-validation-msg')
+                                                        label.mdc-floating-label(for='quantity') Số lượng
+                                                        .mdc-line-ripple
+                                                    p#quantity-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                        | Hiện còn sản phẩm này?
+
+                                                    .mdc-form-field(style='margin-top:10px;')
+                                                        .mdc-radio
+                                                            input#status-active.params.mdc-radio__native-control(type='radio', checked='', name='status', value='1')
+                                                            .mdc-radio__background
+                                                                .mdc-radio__outer-circle
+                                                                .mdc-radio__inner-circle
+                                                        label#ex0-default-radio1-label(for='status-active') Đang bán
+                                                        .mdc-radio
+                                                            input#status-deactive.params.mdc-radio__native-control(type='radio', name='status', value='0')
+                                                            .mdc-radio__background
+                                                                .mdc-radio__outer-circle
+                                                                .mdc-radio__inner-circle
+                                                        label#ex0-default-radio2-label(for='status-deactive') Ngưng kinh doanh
+                                                    p#gender-validation-msg.mdc-text-field-helper-text.mdc-text-field-helper-text--persistent.mdc-text-field-helper-text--validation-msg
+                                                        | Trạng thái sản phẩm
+
+                                                    input.form-control(type="hidden").params#_id
+                        footer.mdc-dialog__footer
+                            span#infoError.error
+                            button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Đóng
+                            button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--accept-custom#saveInfo(type='button') Lưu
+                    .mdc-dialog__backdrop
+
+            aside#mdc-dialog-file.mdc-dialog(role='alertdialog', aria-hidden='true', aria-labelledby='mdc-dialog-default-label', aria-describedby='mdc-dialog-default-description')
+                .mdc-dialog__surface
+                    section#mdc-dialog-default-description.mdc-dialog__body(style='padding: 0; margin: 0;')
+                        iframe#iframe(src='http://cdn.portal.local', style='width: 100%; height: 500px; border: none;', tabindex=0)
+                .mdc-dialog__backdrop
+
+
+block specific-js
+    // Data table plugin
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.dataTables.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.buttons.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.select.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/dataTables.pipeline.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/buttons.html5.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/notify.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/sweet.alert.min.js')
+    script(type='text/javascript', src='/public/backend/js/plugins/jquery.blockUI.js')
+    //script(type='text/javascript', src="/public/backend/js/plugins/select2.min.js")
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/buttons.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='/public/backend/css/select.dataTables.min.css')
+    script(type='text/javascript').
+        _thatUrl = '#{url}';
+        _permission = !{JSON.stringify(permission)};
+        _infoTable = null;
+        _this = null;
+        _buttons = [];
+        _dialog = null;
+        _dialogFile = null;
+    script(type='text/javascript', src="/public/backend/js/extra/products.extra.js")
+
