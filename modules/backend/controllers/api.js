@@ -19,6 +19,7 @@ let FileManager = require('../../../public/plugin/filemanager/fileManager');
 
 router.get('/*', function (req, res) {
     let p = global.__fileManager+req.url;//this.request.fPath;
+    console.log(p);
     if(fs.existsSync(p)) {
         let stats = fs.statSync(p);
         if (stats.isDirectory()) {
@@ -69,9 +70,10 @@ router.put('/*', function (req, res) {
     }
     else if (type === 'RENAME') {
         let target = req.body.target;
-        if (!target) return this.status = 400;
-        FileManager.rename(p, FilePath(target, true));
-        this.body = 'Rename Succeed!';
+        if (!target) return res.status(400).end();
+        FileManager.rename(p, path.join(global.__fileManager, target));
+        res.send('Rename Succeed!');
+        return res.end();
     }
     else {
         res.send('Lack Arg Type!');

@@ -57,8 +57,8 @@ FileManager.move = function (srcs, dest) {
   }
 };
 
-FileManager.rename = function *(src, dest) {
-  yield fse.move(src, dest);
+FileManager.rename = function (src, dest) {
+    fs.renameSync(src, dest);
 };
 
 FileManager.archive = function *(src, archive, dirPath, embedDirs) {
