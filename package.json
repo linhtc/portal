@@ -41,6 +41,8 @@
     "xlsx": "^0.11.16",
     "co-fs": "^1.2.0",
     "co-fs-extra": "^1.2.1",
-    "jszip": "^3.1.5"
+    "jszip": "^3.1.5",
+    "co-busboy": "^1.4.0",
+    "connect-busboy": "^0.0.2"
   }
 }

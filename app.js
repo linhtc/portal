@@ -8,6 +8,7 @@ let cons = require('consolidate');
 // var socket_io = require("socket.io");
 let mongoose = require('mongoose');
 let session = require('express-session');
+let busboy = require("connect-busboy");
 
 // Mongodb config
 let configDB = require('./config/mongodb.js');
@@ -34,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.set('trust proxy', 1);
 app.use(session({secret: "fd34s@!@dfa453f3DF#$D&W",name: 'mySessionName',resave: true,saveUninitialized: true,proxy: false,cookie: { secure: false, maxAge: 60 * 60 * 1000 }}));
-
+app.use(busboy());
 // var fileManager = require('express-file-manager');
 
 let index = require('./routes/index');

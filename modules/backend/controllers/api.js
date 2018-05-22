@@ -1,7 +1,9 @@
 let express = require('express');
 let router = express.Router();
-let Tools = require('./tools');
+// let Tools = require('./tools');
 let fs = require('fs');
+let path = require('path');
+// let formParser = require('co-busboy');
 let FileManager = require('../../../public/plugin/filemanager/fileManager');
 // let bodyParser = require('body-parser');
 
@@ -17,98 +19,116 @@ let FileManager = require('../../../public/plugin/filemanager/fileManager');
 
 router.get('/*', function (req, res) {
     let p = global.__fileManager+req.url;//this.request.fPath;
-    fs.stat(p, function(err, stats){
-        if (err && err.errno === 34) {
-            res.body = origFs.createReadStream(p);
+    if(fs.existsSync(p)) {
+        let stats = fs.statSync(p);
+        if (stats.isDirectory()) {
+            let list = FileManager.list(p);
+            res.json(list);
             return res.end();
-        } else {
-            res.json([{"folder":false,"size":41611,"mtime":1524731322079,"name":"22d23deb.docx"},{"folder":true,"size":4096,"mtime":1522632542919,"name":"home"},{"folder":true,"size":4096,"mtime":1522632551571,"name":"icon"},{"folder":true,"size":4096,"mtime":1522632574019,"name":"photo"}]);
+        } else if(stats.isFile()){
+            return res.download(p);
         }
-    });
+    }
+    return res.end();
 });
 
-router.get('/*', Tools.loadRealPath, Tools.checkPathExists, function *() {
-    var p = this.request.fPath;
-    var stats = yield fs.stat(p);
-    if (stats.isDirectory()) {
-        this.body = yield * FileManager.list(p);
-    }
-    else {
-        //this.body = yield fs.createReadStream(p);
-        this.body = origFs.createReadStream(p);
-    }
+router.delete('/*', function (req, res) {
+    let p = global.__fileManager+'/'+req.params[0];
+    FileManager.remove(p);
+    res.send('Delete Succeed!');
+    return res.end();
 });
 
-// router.del('/.*', Tools.loadRealPath, Tools.checkPathExists, function *() {
-//     var p = this.request.fPath;
-//     yield * FileManager.remove(p);
-//     this.body = 'Delete Succeed!';
-// });
-
-router.put('/.*', Tools.loadRealPath, Tools.checkPathExists, function(){} /*bodyParser()*/, function* () {
-    var type = this.query.type;
-    var p = this.request.fPath;
+router.put('/*', function (req, res) {
+    let type = req.query.type;
+    let p = global.__fileManager+'/'+req.params[0];
     if (!type) {
-        this.status = 400;
-        this.body = 'Lack Arg Type'
+        res.send('Lack Arg Type!');
+        return res.status(400).end();
     }
     else if (type === 'MOVE') {
-        var src = this.request.body.src;
-        if (!src || ! (src instanceof Array)) return this.status = 400;
-        var src = src.map(function (relPath) {
-            return FilePath(relPath, true);
-        });
-        yield * FileManager.move(src, p);
-        this.body = 'Move Succeed!';
+        if(fs.existsSync(p)){
+            let stats = fs.statSync(p);
+            if(stats.isDirectory()){
+                let src = req.body.src;
+                if (!src || ! (src instanceof Array)) return res.status(400).end();
+                src = src.map(function (relPath) {
+                    return path.join(global.__fileManager, relPath);
+                });
+                FileManager.move(src, p);
+                res.send('Move Succeed!');
+                return res.end();
+            } else{
+                res.send('Directory not found!');
+                return res.status(400).end();
+            }
+        } else{
+            res.send('Directory not found!');
+            return res.status(400).end();
+        }
     }
     else if (type === 'RENAME') {
-        var target = this.request.body.target;
+        let target = req.body.target;
         if (!target) return this.status = 400;
-        yield * FileManager.rename(p, FilePath(target, true));
+        FileManager.rename(p, FilePath(target, true));
         this.body = 'Rename Succeed!';
     }
     else {
-        this.status = 400;
-        this.body = 'Arg Type Error!';
+        res.send('Lack Arg Type!');
+        return res.status(400).end();
     }
 });
 
-router.post('/.*', Tools.loadRealPath, Tools.checkPathNotExists, function(){} /*bodyParser()*/, function *() {
-    var type = this.query.type;
-    var p = this.request.fPath;
+router.post('/*', function (req, res) {
+    let type = req.query.type;
+    let p = global.__fileManager+'/'+req.params[0];
     if (!type) {
-        this.status = 400;
-        this.body = 'Lack Arg Type!';
+        res.send('Lack Arg Type!');
+        return res.status(400).end();
     }
     else if (type === 'CREATE_FOLDER') {
-        yield * FileManager.mkdirs(p);
-        this.body = 'Create Folder Succeed!';
+        FileManager.mkdirs(p);
+        res.send('Create Folder Succeed!');
+        return res.end();
     }
     else if (type === 'UPLOAD_FILE') {
-        var formData = yield formParser(this.req);
-        if (formData.fieldname === 'upload'){
-            var writeStream = origFs.createWriteStream(p);
-            formData.pipe(writeStream);
-            this.body = 'Upload File Succeed!';
+        // let formData = formParser(req.body);
+        // console.log(formData);
+        if(req.busboy) {
+            req.busboy.on("file", function(fieldName, fileStream, fileName, encoding, mimeType) {
+                // console.log(fieldName);
+                if(fieldName === 'upload'){
+                    console.log('Uploading... '+fileName);
+                    let fstream = fs.createWriteStream(p);
+                    fileStream.pipe(fstream);
+                    fstream.on('close', function () {
+                        res.send('Upload File Succeed!');
+                        return res.end();
+                    });
+                } else{
+                    res.send('Lack Arg Type!');
+                    return res.status(400).end();
+                }
+            });
+            return req.pipe(req.busboy);
+        } else {
+            res.send('Lack Arg Type!');
+            return res.status(400).end();
         }
-        else {
-            this.status = 400;
-            this.body = 'Lack Upload File!';
-        }
-    }
-    else if (type === 'CREATE_ARCHIVE') {
-        var src = this.request.body.src;
-        if (!src) return this.status = 400;
-        src = src.map(function(file) {
-            return FilePath(file, true);
-        })
-        var archive = p;
-        yield * FileManager.archive(src, archive, C.data.root, !!this.request.body.embedDirs);
-        this.body = 'Create Archive Succeed!';
-    }
-    else {
-        this.status = 400;
-        this.body = 'Arg Type Error!';
+    } else if (type === 'CREATE_ARCHIVE') {
+        res.send('Coming soon!');
+        return res.status(400).end();
+        // let src = this.request.body.src;
+        // if (!src) return res.status(400).end();
+        // src = src.map(function(file) {
+        //     return FilePath(file, true);
+        // });
+        // let archive = p;
+        // FileManager.archive(src, archive, C.data.root, !!this.request.body.embedDirs);
+        // this.body = 'Create Archive Succeed!';
+    } else {
+        res.send('Lack Arg Type!');
+        return res.status(400).end();
     }
 });
 

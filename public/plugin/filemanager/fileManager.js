@@ -1,13 +1,10 @@
-var fs = require('co-fs');
-var co = require('co');
-var fse = require('co-fs-extra');
-var path = require('path');
-var JSZip = require('jszip');
+let path = require('path');
+let fs = require('fs');
 
-var FileManager = {};
+let FileManager = {};
 
-FileManager.getStats = function *(p) {
-  var stats = yield fs.stat(p);
+FileManager.getStats = function (p) {
+  let stats = fs.statSync(p);
   return {
     folder: stats.isDirectory(),
     size: stats.size,
@@ -15,30 +12,48 @@ FileManager.getStats = function *(p) {
   }
 };
 
-FileManager.list = function *(dirPath) {
-  var files = yield fs.readdir(dirPath);
-  var stats = [];
-  for (var i=0; i<files.length; ++i) {
-    var fPath = path.join(dirPath, files[i]);
-    var stat = yield FileManager.getStats(fPath);
-    stat.name = files[i];
-    stats.push(stat);
+FileManager.list = function (dirPath) {
+  let files = fs.readdirSync(dirPath);
+  let stats = [];
+  for (let i in files) {
+    if(files.hasOwnProperty(i)){
+      let fPath = path.join(dirPath, files[i]);
+      let stat = FileManager.getStats(fPath);
+      stat.name = files[i];
+      stats.push(stat);
+    }
   }
   return stats;
 };
 
-FileManager.remove = function *(p) {
-  yield fse.remove(p);
+FileManager.remove = function (p) {
+    let stats = fs.statSync(p);
+    if(stats.isDirectory()){
+        if( fs.existsSync(p) ) {
+            fs.readdirSync(p).forEach(function(file, index){
+                let curPath = p + "/" + file;
+                if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                    FileManager.remove(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(p);
+        }
+    } else if(stats.isFile()){
+        fs.unlinkSync(p);
+    }
 };
 
-FileManager.mkdirs = function *(dirPath) {
-  yield fse.mkdirs(dirPath);
+FileManager.mkdirs = function (dirPath) {
+  fs.mkdirSync(dirPath);
 };
 
-FileManager.move = function *(srcs, dest) {
-  for (var i=0; i<srcs.length; ++i) {
-    var basename = path.basename(srcs[i]);
-    yield fse.move(srcs[i], path.join(dest, basename));
+FileManager.move = function (srcs, dest) {
+  for (let i=0; i<srcs.length; ++i) {
+    let src = srcs[i];
+    let basename = path.basename(src);
+    fs.renameSync(src, dest+'/'+basename);
   }
 };
 
